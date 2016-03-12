@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+import floodfill.Tile.State;
+
 public final class Flooder {
 	private Rectangle			boundry;
 	private BoundryChecker	boundryChecker;
@@ -63,6 +65,20 @@ public final class Flooder {
 	}
 	
 	/**
+	 * Recursively does floods till there are no more edges
+	 */
+	public void flood(int x , int y) {
+		if(check(map , x , y , x , y))
+			map[x][y].state = State.FILLED;
+		for(int i = -1; i <= 1; i++) {
+			for(int j = -1; j <= 1; j++) {
+				if((i != 0 || j != 0) && (isEightDirections || (i == 0 ^ j == 0)) && check(map , x , y , x + i , y + j))
+					flood(x + i , y + j);
+			}
+		}
+	}
+	
+	/**
 	 * Sets all tiles in map to a state of <code>{@link Tile.State#NONE}</code>
 	 */
 	public void reset() {
@@ -116,7 +132,7 @@ public final class Flooder {
 		return hasEdges;
 	}
 	
-	private void floodBlock(Tile[][] tempMap , int x , int y , int dx , int dy) {
+	private boolean check(Tile[][] tempMap , int x , int y , int dx , int dy) {
 		boolean check = boundryChecker.isInBounds(x + dx , y + dy);
 		if(check) {
 			if(boundryChecker.is1Parameter)
@@ -124,7 +140,11 @@ public final class Flooder {
 			else
 				check = !boundryChecker.isBoundaryType(map[x][y] , dx , dy);
 		}
-		if(check && isInBounds(x + dx , y + dy) && map[x + dx][y + dy].state == Tile.State.NONE) {
+		return check && isInBounds(x + dx , y + dy) && map[x + dx][y + dy].state == Tile.State.NONE;
+	}
+	
+	private void floodBlock(Tile[][] tempMap , int x , int y , int dx , int dy) {
+		if(check(tempMap , x , y , dx , dy)) {
 			hasEdges = true;
 			tempMap[x + dx][y + dy].state = Tile.State.EDGE;
 			if(tempMap[x + dx][y + dy].owner == null)
