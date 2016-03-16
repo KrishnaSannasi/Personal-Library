@@ -207,7 +207,6 @@ public class Logger implements AutoCloseable {
 	public synchronized void log(LoggerType type , String log , String timeFormat) {
 		if(closed)
 			throw new IllegalStateException("Logger closed");
-//		pane.setIgnoreRepaint(true);
 		synchronized(closed) {
 			final Style defaultStyle = pane.getStyle(type.text);
 			String timeText;
@@ -234,8 +233,7 @@ public class Logger implements AutoCloseable {
 				StyledDocument doc = pane.getStyledDocument();
 				doc.insertString(doc.getLength() , header , pane.getStyle(LoggerType.NORMAL.text));
 				final Color background = pane.getBackground() , foreground = StyleConstants.getForeground(defaultStyle);
-				for(String w: log.split(" ")) {
-//					
+				for(String w: log.split(" ")) {					
 					String wIndex = w.toLowerCase();
 					for(char puncuation: punctuationList) {
 						wIndex = wIndex.replace(puncuation + "" , "");
@@ -274,6 +272,5 @@ public class Logger implements AutoCloseable {
 				e.printStackTrace();
 			}
 		}
-//		pane.setIgnoreRepaint(false);
 	}
 }

@@ -9,6 +9,26 @@ import java.util.Scanner;
 
 public class LinearAlgebra {
 	public static void main(String[] args) {
+		final double stay_in , stay_out;
+		
+		stay_in = .99;
+		stay_out = .995;
+		System.out.println(stay_in + "\t" + stay_out);
+		
+		double[][] a = {{stay_in , 1 - stay_out} , {1 - stay_in , stay_out}};
+		double[][] b = {{(int) (Math.random() * 1000000)} , {(int) (Math.random() * 1000000)}};
+		double[][] c;
+		int y = 0;
+		do {
+			System.out.println(b[0][0] + "\t" + b[1][0]);
+			c = round(b , 0);
+			b = multiply(a , b);
+			y++;
+		} while(!Arrays.deepEquals(round(b , 0) , c));
+		System.out.println(y);
+	}
+	
+	public static void main1(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		ArrayList<String> arrayString = new ArrayList<>();
 		String line = "";
@@ -38,6 +58,72 @@ public class LinearAlgebra {
 		catch(InfiniteSolutionException e) {
 			System.out.println("Infinite solutions");
 		}
+	}
+	
+	private static double[][] copy(double[][] m) {
+		double[][] t = new double[m.length][];
+		for(int i = 0; i < m.length; i++) {
+			t[i] = new double[m[i].length];
+			for(int j = 0; j < m[i].length; j++) {
+				t[i][j] = m[i][j];
+			}
+		}
+		return t;
+	}
+	
+	public static double[][] round(double[][] a , int precision) {
+		a = copy(a);
+		int power = (int) Math.pow(10 , precision);
+		for(int i = 0; i < a.length; i++) {
+			for(int j = 0; j < a[i].length; j++) {
+				a[i][j] = Math.round(a[i][j] * power) / power;
+			}
+		}
+		return a;
+	}
+	
+	private static boolean isRectangle(double[][] a) {
+		if(a.length == 0)
+			return true;
+		int size = a[0].length;
+		for(double[] e: a) {
+			if(size != e.length)
+				return false;
+		}
+		return true;
+	}
+	
+	public static int[] dim(double[][] a) {
+		if(isRectangle(a))
+			return new int[] {a.length == 0 ? 0 : a[0].length , a.length};
+		throw new IllegalArgumentException("Non-Square Matrix");
+	}
+	
+	public static double[][] multiply(double[][] a , double b) {
+		a = copy(a);
+		for(int i = 0; i < a.length; i++) {
+			for(int j = 0; j < a[i].length; j++) {
+				a[i][j] *= b;
+			}
+		}
+		return a;
+	}
+	
+	public static double[][] multiply(double[][] a , double[][] b) {
+		int[] dima = dim(a);
+		int[] dimb = dim(b);
+		double[][] result = new double[dima[1]][dimb[0]];
+		if(dimb[1] != dima[0])
+			throw new IllegalArgumentException("Invalid dimentions");
+		int s = dimb[1];
+		for(int i = 0; i < dimb[0]; i++) {
+			for(int j = 0; j < dima[1]; j++) {
+				for(int k = 0; k < s; k++) {
+					result[j][i] += a[j][k] * b[k][i];
+				}
+			}
+		}
+		return result;
 	}
 	
 	public static double det(double[][] matrix) {
@@ -148,7 +234,10 @@ public class LinearAlgebra {
 	}
 	
 	public static final void print(double[][] array) {
-		Arrays.stream(array).forEach(e -> System.out.println(Arrays.toString(e).replace(".0," , ",").replace(".0]" , "]")));
+		int i = 0;
+		for(double[] e: array) {
+			System.out.println((i++ == 0 ? "[" : " ") + Arrays.toString(e).replace(".0," , ",").replace(".0]" , "]") + (i == array.length ? "]" : ""));
+		}
 		System.out.println();
 	}
 	
