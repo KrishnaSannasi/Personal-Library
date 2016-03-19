@@ -25,9 +25,9 @@ import javax.swing.text.StyledDocument;
 public class Logger implements AutoCloseable {
 	public static final Logger LOGGER = new Logger();
 	
-	private static final List<Character>	punctuationList;
+	private static final List<Character>	PUNCTUATION_LIST;
 	public static final Dimension				BOUNDS	= new Dimension(500 , 600);
-	private static final Object				darker	= new Object() , brighter = new Object() , none = new Object();
+	private static final Object				DARKER	= new Object() , BRIGHTER = new Object() , NONE = new Object();
 	
 	public static final int FONT_SIZE = 15;
 	
@@ -44,9 +44,9 @@ public class Logger implements AutoCloseable {
 	static {
 		if(!LOGGER.closed) {
 			char[] punctuationArray = {'{' , '}' , '(' , ')' , '[' , ']' , '<' , '>' , '.' , ',' , '/' , '\\' , ':' , ';'};
-			punctuationList = new LinkedList<>();
+			PUNCTUATION_LIST = new LinkedList<>();
 			for(char c: punctuationArray) {
-				punctuationList.add(c);
+				PUNCTUATION_LIST.add(c);
 			}
 			JFrame frame = Logger.LOGGER.frame = new JFrame("Logger");
 			Logger.LOGGER.timeDisplay = LoggerTimeDisplay.MILLISECONDS;
@@ -56,7 +56,7 @@ public class Logger implements AutoCloseable {
 			frame.setVisible(false);
 		}
 		else {
-			punctuationList = null;
+			PUNCTUATION_LIST = null;
 		}
 	}
 	
@@ -144,18 +144,18 @@ public class Logger implements AutoCloseable {
 		Color c = options.color;
 		if(c == null) {
 			c = pane.getBackground();
-			if(tone == 1)
-				style.addAttribute("color.tone" , brighter);
-			else if(tone == -1)
-				style.addAttribute("color.tone" , darker);
+			if(tone > 0)
+				style.addAttribute("color.tone" , BRIGHTER);
+			else if(tone < 0)
+				style.addAttribute("color.tone" , DARKER);
 			else
-				style.addAttribute("color.tone" , none);
+				style.addAttribute("color.tone" , NONE);
 		}
 		else {
-			style.addAttribute("color.tone" , none);
-			if(tone == 1)
+			style.addAttribute("color.tone" , NONE);
+			if(tone > 0)
 				c = c.brighter();
-			else if(tone == -1)
+			else if(tone < 0)
 				c = c.darker();
 		}
 		StyleConstants.setForeground(style , c);
@@ -209,6 +209,7 @@ public class Logger implements AutoCloseable {
 			throw new IllegalStateException("Logger closed");
 		synchronized(closed) {
 			final Style defaultStyle = pane.getStyle(type.text);
+			
 			String timeText;
 			switch(timeDisplay) {
 				case NANOSECONDS:
@@ -233,30 +234,37 @@ public class Logger implements AutoCloseable {
 				StyledDocument doc = pane.getStyledDocument();
 				doc.insertString(doc.getLength() , header , pane.getStyle(LoggerType.NORMAL.text));
 				final Color background = pane.getBackground() , foreground = StyleConstants.getForeground(defaultStyle);
-				for(String w: log.split(" ")) {					
-					String wIndex = w.toLowerCase();
-					for(char puncuation: punctuationList) {
-						wIndex = wIndex.replace(puncuation + "" , "");
+				for(String w: log.split(" ")) {
+					String word = w.toLowerCase();
+					for(char puncuation: PUNCTUATION_LIST) {
+						word = word.replace(puncuation + "" , "");
 					}
-					if(styleMap.containsKey(wIndex)) {
-						Style style = styleMap.get(wIndex);
+					if(styleMap.containsKey(word)) {
+						Style style = styleMap.get(word);
 						if(StyleConstants.getForeground(style).equals(background)) {
 							Color color = StyleConstants.getForeground(style);
-							if(style.getAttribute("color.tone") == none)
+							Object colorTone = style.getAttribute("color.tone");
+							if(colorTone == BRIGHTER)
+								StyleConstants.setForeground(style , foreground.brighter());
+							else if(colorTone == DARKER)
+								StyleConstants.setForeground(style , foreground.darker());
+							else
 								StyleConstants.setForeground(style , foreground);
-							else {
-								if(style.getAttribute("color.tone") == brighter)
-									StyleConstants.setForeground(style , foreground.brighter());
-								else
-									StyleConstants.setForeground(style , foreground.darker());
-							}
-							doc.insertString(doc.getLength() , w , defaultStyle);
+							doc.insertString(doc.getLength() , w , style);
 							StyleConstants.setForeground(style , color);
 						}
 						else {
+							boolean isPunc = PUNCTUATION_LIST.contains(w.charAt(0));
+							String temp = "";
 							for(char c: w.toCharArray()) {
-								doc.insertString(doc.getLength() , c + "" , Logger.punctuationList.contains(c) ? defaultStyle : style);
+								if(isPunc != PUNCTUATION_LIST.contains(c)) {
+									doc.insertString(doc.getLength() , temp , isPunc ? defaultStyle : style);
+									isPunc = !isPunc;
+									temp = "";
+								}
+								temp += c;
 							}
+							doc.insertString(doc.getLength() , temp , isPunc ? defaultStyle : style);
 						}
 					}
 					else {
