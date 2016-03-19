@@ -139,7 +139,8 @@ public class Logger implements AutoCloseable {
 			throw new IllegalArgumentException("Invalid keyword (no spaces)");
 		if(pane.getBackground().equals(options.color))
 			throw new IllegalArgumentException("Invalid color");
-		Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()).contains(options.font);
+		if(!Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()).contains(options.font))
+			throw new IllegalArgumentException("Invalid font");
 		Style style = pane.addStyle("KEYWORD: " + LoggerType.ERROR.text , null);
 		Color c = options.color;
 		if(c == null) {
