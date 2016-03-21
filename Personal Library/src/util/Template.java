@@ -1,4 +1,4 @@
-package template;
+package util;
 
 public interface Template<T extends Type<?>> {
 	T create();

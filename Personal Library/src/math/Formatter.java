@@ -40,14 +40,14 @@ public class Formatter {
 		return format(number.toBigInteger()) + "." + String.format("%." + precision + "f" , number.subtract(number.setScale(0 , BigDecimal.ROUND_FLOOR))).substring(2);
 	}
 	
-	public static String toStringMoney(double number) {
+	public static String formatMoney(double number) {
 		if(MONEY_BEFORE)
 			return MONEY_SYMBOL + format(number);
 		else
 			return format(number) + MONEY_SYMBOL;
 	}
 	
-	public static String toStringMoney(BigDecimal number) {
+	public static String formatMoney(BigDecimal number) {
 		if(MONEY_BEFORE)
 			return MONEY_SYMBOL + " " + format(number);
 		else
