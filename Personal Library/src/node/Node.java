@@ -5,6 +5,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/**
+ * Represents a node in a network of connections
+ * 
+ * @author Krishna
+ * 			
+ */
 public class Node implements Comparable<Node> {
 	public static int nextID = 0;
 	
@@ -21,11 +27,17 @@ public class Node implements Comparable<Node> {
 		return connections.size();
 	}
 	
+	/**
+	 * Returns the path via connections to a desired node
+	 * 
+	 * @return null if there is no path and a list of nodes that is the path to
+	 *         the node
+	 */
 	public final LinkedList<Node> pathTo(Node find) {
 		return pathTo(find , new LinkedList<>());
 	}
 	
-	public final LinkedList<Node> pathTo(Node find , LinkedList<Node> path) {
+	private LinkedList<Node> pathTo(Node find , LinkedList<Node> path) {
 		LinkedList<LinkedList<Node>> allPaths = new LinkedList<>();
 		LinkedList<Node> temp , arg;
 		
@@ -87,6 +99,12 @@ public class Node implements Comparable<Node> {
 		}
 	}
 	
+	/**
+	 * Returns a map of all the nodes that this node can access indirectly via
+	 * connections to other nodes and how many connections away this node is from
+	 * this node. The key is the node and the value is how many connections away
+	 * the node is.
+	 */
 	public final Map<Node , Integer> getAllConnections() {
 		TreeMap<Node , Integer> deepStorage = new TreeMap<>();
 		TreeSet<Node> uncheckedCurrent = new TreeSet<>() , uncheckedTemp = new TreeSet<>();
@@ -118,23 +136,34 @@ public class Node implements Comparable<Node> {
 		return deepStorage;
 	}
 	
+	/**
+	 * Returns the name of this node
+	 */
+	public String getName() {
+		return "Node " + id;
+	}
+	
+	/**
+	 * Compares the id of the nodes for easy sorting using TreeSet and TreeMap
+	 * 
+	 */
 	@Override
 	public int compareTo(Node link) {
 		return (int) Math.signum(id - link.id);
 	}
 	
 	@Override
-	public String toString() {
+	public final String toString() {
 		int buffer = (int) Math.ceil(Math.log10(nextID));
 		StringBuffer connections = new StringBuffer();
 		connections.append("[");
 		for(Node connection: this.connections) {
-			connections.append(connection.id).append(", ");
+			connections.append(connection.getName()).append(", ");
 		}
 		if(this.connections.size() != 0)
 			connections.delete(connections.length() - 2 , connections.length());
 		connections.append(']');
-		return String.format("%" + buffer + "d->%s" , id , connections.toString());
+		return String.format("%" + buffer + "s->%s" , getName() , connections.toString());
 //		return "" + id;
 	}
 }

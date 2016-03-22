@@ -15,4 +15,9 @@ public class ValueNode<E> extends Node {
 	public void setValue(E value) {
 		this.value = value;
 	}
+	
+	@Override
+	public String getName() {
+		return value.toString();
+	}
 }
