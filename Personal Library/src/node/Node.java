@@ -28,6 +28,14 @@ public class Node implements Comparable<Node> {
 		return connections.size();
 	}
 	
+	public final Node[] getConnections() {
+		return connections.toArray(new Node[connections.size()]);
+	}
+	
+	public final boolean hasConnectionWith(Node node) {
+		return connections.contains(node);
+	}
+	
 	public static LinkedList<Collection<Node>> getGroups(Node... nodes) {
 		LinkedList<Node> nonprintedNodes = new LinkedList<>();
 		LinkedList<Collection<Node>> groups = new LinkedList<>();
