@@ -200,14 +200,12 @@ public class Node implements Comparable<Node> {
 	@Override
 	public final String toString() {
 		StringBuffer connections = new StringBuffer();
-		connections.append("[");
 		for(Node connection: this.connections) {
 			connections.append(connection.getName()).append(", ");
 		}
 		if(this.connections.size() != 0)
 			connections.delete(connections.length() - 2 , connections.length());
-		connections.append(']');
-		return String.format("%s->%s" , getName() , connections.toString());
+		return String.format("%s -> %s" , getName() , connections.toString());
 //		return "" + id;
 	}
 }
