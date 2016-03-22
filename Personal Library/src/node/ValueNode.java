@@ -4,7 +4,7 @@ public class ValueNode<E> extends Node {
 	private E value;
 	
 	@SafeVarargs
-	public ValueNode(ValueNode<E>... connections) {
+	public ValueNode(Node... connections) {
 		super(connections);
 	}
 	

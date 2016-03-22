@@ -4,7 +4,7 @@ import property.propertyset.ComparablePropertySet;
 
 public class ComparabelPropertiesNode<V extends Comparable<V>> extends ValueNode<ComparablePropertySet<V>> {
 	@SafeVarargs
-	public ComparabelPropertiesNode(ComparabelPropertiesNode<V>... connections) {
+	public ComparabelPropertiesNode(Node... connections) {
 		super(connections);
 		super.setValue(new ComparablePropertySet<>());
 	}
