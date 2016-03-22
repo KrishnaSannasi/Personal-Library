@@ -5,8 +5,7 @@ import property.propertyset.PropertySet;
 public class PropertiesNode<V> extends ValueNode<PropertySet<V>> {
 	@SafeVarargs
 	public PropertiesNode(Node... connections) {
-		super(connections);
-		super.setValue(new PropertySet<>());
+		super(new PropertySet<>() , connections);
 	}
 	
 	@Override

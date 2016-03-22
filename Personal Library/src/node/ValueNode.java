@@ -8,6 +8,12 @@ public class ValueNode<E> extends Node {
 		super(connections);
 	}
 	
+	@SafeVarargs
+	public ValueNode(E value , Node... connections) {
+		super(connections);
+		this.value = value;
+	}
+	
 	public E getValue() {
 		return value;
 	}
