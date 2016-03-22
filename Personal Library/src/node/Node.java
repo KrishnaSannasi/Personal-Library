@@ -27,6 +27,23 @@ public class Node implements Comparable<Node> {
 		return connections.size();
 	}
 	
+	public static LinkedList<Node> pathTo(Node start , Node find , Node... waypoints) {
+		LinkedList<Node> path = new LinkedList<>() , temp;
+		Node current = start;
+		for(Node node: waypoints) {
+			temp = current.pathTo(node);
+			if(temp == null)
+				return null;
+			path.addAll(temp);
+			current = node;
+		}
+		temp = current.pathTo(find);
+		if(temp == null)
+			return null;
+		path.addAll(temp);
+		return path;
+	}
+	
 	/**
 	 * Returns the path via connections to a desired node
 	 * 
