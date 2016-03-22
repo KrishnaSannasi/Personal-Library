@@ -1,5 +1,6 @@
 package node;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,6 +26,33 @@ public class Node implements Comparable<Node> {
 	
 	public final int getNumberOfConnections() {
 		return connections.size();
+	}
+	
+	public static LinkedList<Collection<Node>> getGroups(Node... nodes) {
+		LinkedList<Node> nonprintedNodes = new LinkedList<>();
+		LinkedList<Collection<Node>> groups = new LinkedList<>();
+		
+		for(Node node: nodes) {
+			nonprintedNodes.add(node);
+		}
+		Collection<Node> all;
+		for(int i = 0; i < nonprintedNodes.size();) {
+			all = nonprintedNodes.get(i++).getAllConnections().keySet();
+			groups.add(all);
+			StringBuffer connections = new StringBuffer();
+			connections.delete(0 , connections.length());
+			connections.append(all.size()).append(" [");
+			for(Node connection: all) {
+				connections.append(connection.getName()).append(", ");
+			}
+			connections.delete(connections.length() - 2 , connections.length());
+			connections.append(']');
+			nonprintedNodes.removeAll(all);
+			if(all.size() != 0) {
+				i = 0;
+			}
+		}
+		return groups;
 	}
 	
 	public static LinkedList<Node> pathTo(Node start , Node find , Node... waypoints) {
@@ -171,7 +199,6 @@ public class Node implements Comparable<Node> {
 	
 	@Override
 	public final String toString() {
-		int buffer = (int) Math.ceil(Math.log10(nextID));
 		StringBuffer connections = new StringBuffer();
 		connections.append("[");
 		for(Node connection: this.connections) {
@@ -180,7 +207,7 @@ public class Node implements Comparable<Node> {
 		if(this.connections.size() != 0)
 			connections.delete(connections.length() - 2 , connections.length());
 		connections.append(']');
-		return String.format("%" + buffer + "s->%s" , getName() , connections.toString());
+		return String.format("%s->%s" , getName() , connections.toString());
 //		return "" + id;
 	}
 }
