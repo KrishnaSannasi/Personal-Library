@@ -1,8 +1,8 @@
 package node;
 
-public class NamedNode extends ValueNode<String> {
+public class NamedNode<V> extends ValueNode<V , String> {
 	@SafeVarargs
-	public NamedNode(String name , Node... connections) {
+	public NamedNode(String name , Node<V>... connections) {
 		super(name , connections);
 	}
 	

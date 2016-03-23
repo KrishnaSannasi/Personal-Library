@@ -1,16 +1,16 @@
 package node;
 
-public class ValueNode<E> extends Node {
+public class ValueNode<V , E> extends Node<V> {
 	private E value;
 	
 	@SafeVarargs
-	public ValueNode(Node... connections) {
+	public ValueNode(Node<V>... connections) {
 		super(connections);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
-	public ValueNode(E value , Node... connections) {
+	public ValueNode(E value , Node<V>... connections) {
 		super(connections);
 		this.value = value;
 		if(value instanceof Nodable)
