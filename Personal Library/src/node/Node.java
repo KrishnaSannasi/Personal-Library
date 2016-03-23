@@ -15,7 +15,7 @@ import java.util.TreeSet;
 public class Node<E> implements Comparable<Node<E>> {
 	public static int nextID = 0;
 	
-	public final int						id;
+	public final int							id;
 	private LinkedList<Connection<E>>	connections;
 	
 	@SafeVarargs
@@ -133,12 +133,17 @@ public class Node<E> implements Comparable<Node<E>> {
 		return min;
 	}
 	
-	public final void addConnection(Node<E> node) {
+	public final Connection<E> addConnection(Node<E> node) {
 		if(node != this && !connections.contains(node)) {
 			Connection<E> conn = new Connection<>(this , node);
 			connections.add(conn);
 			node.connections.add(conn);
+			return conn;
 		}
+		if(node == this)
+			return null;
+		else
+			return getConnection(node);
 	}
 	
 	public final void removeConnection(Node<E> node) {
