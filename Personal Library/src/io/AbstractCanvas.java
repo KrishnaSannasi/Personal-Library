@@ -155,7 +155,7 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
 			do {
 				thisFrameTime = System.nanoTime();
 				fps = 1000000000. / (thisFrameTime - lastFrameTime);
-			} while(fps > targetFPS);
+			} while(fps > targetFPS && targetFPS != -1);
 			deltaT = 1 / fps;
 			lastFrameTime = System.nanoTime();
 			if(frame != null && showFPS)
