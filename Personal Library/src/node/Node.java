@@ -147,10 +147,8 @@ public class Node<E> implements Comparable<Node<E>> {
 	}
 	
 	public final void removeConnection(Node<E> node) {
-		if(node != this && connections.contains(node)) {
-			connections.remove(node);
-			node.connections.remove(this);
-		}
+		connections.remove(node);
+		node.connections.remove(this);
 	}
 	
 	@SafeVarargs
@@ -225,6 +223,18 @@ public class Node<E> implements Comparable<Node<E>> {
 	@Override
 	public int compareTo(Node<E> link) {
 		return (int) Math.signum(id - link.id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Node) {
+			return ((Node<E>) obj).id == id;
+		}
+		else if(obj instanceof Connection) {
+			return equals(((Connection<E>) obj).node1) || equals(((Connection<E>) obj).node2);
+		}
+		return super.equals(obj);
 	}
 	
 	@Override
