@@ -10,6 +10,7 @@ public final class Solver {
 	}
 	
 	public static final SolverCase[] solve(SolverCase problem , boolean findFirstOnly) {
+		problem.preliminarySolve();
 		SolverState s = problem.checkValidity();
 		
 		switch(s) {
