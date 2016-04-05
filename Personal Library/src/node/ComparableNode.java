@@ -3,7 +3,7 @@ package node;
 public abstract class ComparableNode<V , E> extends ValueNode<V , E> {
 	public static boolean doAsending = true;
 	
-	abstract int getComparableValue();
+	public abstract int getComparableValue();
 	
 	@Override
 	public final int compareTo(Node<V> compare) {
