@@ -3,7 +3,7 @@ package node;
 public class ComparableConnection<E> extends Connection<E>implements Comparable<ComparableConnection<E>> {
 	public static boolean doAsending = true;
 	
-	public int distance;
+	public double distance;
 	
 	public ComparableConnection(ComparableNode<E , ?> node1 , ComparableNode<E , ?> node2) {
 		super(node1 , node2);
@@ -13,8 +13,13 @@ public class ComparableConnection<E> extends Connection<E>implements Comparable<
 	@Override
 	public int compareTo(ComparableConnection<E> o) {
 		if(doAsending)
-			return distance - o.distance;
+			return (int) (distance - o.distance);
 		else
-			return o.distance - distance;
+			return (int) (o.distance - distance);
+	}
+	
+	@Override
+	public String toString() {
+		return node1.id + " " + node2.id + " " + distance;
 	}
 }

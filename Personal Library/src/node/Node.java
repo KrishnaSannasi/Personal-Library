@@ -16,7 +16,7 @@ public class Node<E> implements Comparable<Node<E>> {
 	public static int nextID = 0;
 	
 	public final int							id;
-	private LinkedList<Connection<E>>	connections;
+	protected LinkedList<Connection<E>>	connections;
 	
 	@SafeVarargs
 	public Node(Node<E>... connections) {
@@ -133,7 +133,7 @@ public class Node<E> implements Comparable<Node<E>> {
 		return min;
 	}
 	
-	public final Connection<E> addConnection(Node<E> node) {
+	public Connection<E> addConnection(Node<E> node) {
 		if(node != this && !connections.contains(node)) {
 			Connection<E> conn = new Connection<>(this , node);
 			connections.add(conn);

@@ -163,7 +163,7 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
 			tick();
 			render(image.createGraphics());
 			try {
-				strategy.getDrawGraphics().drawImage(image , 0 , 0 , getWidth() , getHeight() , null);
+				strategy.getDrawGraphics().drawImage(image , 0 , 0 , getWidth() , getHeight() , 0 , 0 , SHOW_WIDTH , SHOW_HEIGHT , null);
 			}
 			catch(Exception e) {
 			}
