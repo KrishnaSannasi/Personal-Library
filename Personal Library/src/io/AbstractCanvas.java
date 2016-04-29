@@ -23,7 +23,7 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
 	public final Dimension								DIMENTION;
 	private BufferStrategy								strategy;
 	protected JFrame										frame;
-	protected double										deltaT;
+	public double											deltaT;
 	
 	private volatile boolean	done;
 	public volatile boolean		showFPS		= false , useWASD = true , useARROW = true;
