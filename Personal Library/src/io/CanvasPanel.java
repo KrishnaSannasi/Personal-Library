@@ -42,7 +42,6 @@ public class CanvasPanel extends JPanel {
 	public void setCanvas(AbstractCanvas canvas , boolean start) {
 		if(this.canvas != null) {
 			this.canvas.stop();
-			this.canvas.frame = null;
 			remove(this.canvas);
 		}
 		canvas.showFPS = true;
