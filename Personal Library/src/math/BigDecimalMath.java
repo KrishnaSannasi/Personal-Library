@@ -41,8 +41,7 @@ public class BigDecimalMath {
 	/**
 	 * Euler's constant.
 	 * 
-	 * @param mc
-	 *           The required precision of the result.
+	 * @param mc The required precision of the result.
 	 * @return 3.14159...
 	 * @since 2009-05-29
 	 */
@@ -63,8 +62,7 @@ public class BigDecimalMath {
 	/**
 	 * Euler-Mascheroni constant.
 	 * 
-	 * @param mc
-	 *           The required precision of the result.
+	 * @param mc The required precision of the result.
 	 * @return 0.577...
 	 * @since 2009-08-13
 	 */
@@ -107,8 +105,7 @@ public class BigDecimalMath {
 	/**
 	 * The square root.
 	 * 
-	 * @param x
-	 *           the non-negative argument.
+	 * @param x the non-negative argument.
 	 * @param mc
 	 * @return the square root of the BigDecimal.
 	 * @since 2008-10-27
@@ -147,8 +144,7 @@ public class BigDecimalMath {
 	/**
 	 * The square root.
 	 * 
-	 * @param x
-	 *           the non-negative argument.
+	 * @param x the non-negative argument.
 	 * @return the square root of the BigDecimal rounded to the precision implied
 	 *         by x.
 	 * @since 2009-06-25
@@ -163,8 +159,7 @@ public class BigDecimalMath {
 	/**
 	 * The cube root.
 	 * 
-	 * @param x
-	 *           The argument.
+	 * @param x The argument.
 	 * @return The cubic root of the BigDecimal rounded to the precision implied
 	 *         by x. The sign of the result is the sign of the argument.
 	 * @since 2009-08-16
@@ -181,10 +176,8 @@ public class BigDecimalMath {
 	/**
 	 * The integer root.
 	 * 
-	 * @param n
-	 *           the positive argument.
-	 * @param x
-	 *           the non-negative argument.
+	 * @param n the positive argument.
+	 * @param x the non-negative argument.
 	 * @return The n-th root of the BigDecimal rounded to the precision implied
 	 *         by x, x^(1/n).
 	 * @since 2009-07-30
@@ -231,10 +224,8 @@ public class BigDecimalMath {
 	/**
 	 * The hypotenuse.
 	 * 
-	 * @param x
-	 *           the first argument.
-	 * @param y
-	 *           the second argument.
+	 * @param x the first argument.
+	 * @param y the second argument.
 	 * @return the square root of the sum of the squares of the two arguments,
 	 *         sqrt(x^2+y^2).
 	 * @since 2009-06-25
@@ -259,10 +250,8 @@ public class BigDecimalMath {
 	/**
 	 * The hypotenuse.
 	 * 
-	 * @param n
-	 *           the first argument.
-	 * @param x
-	 *           the second argument.
+	 * @param n the first argument.
+	 * @param x the second argument.
 	 * @return the square root of the sum of the squares of the two arguments,
 	 *         sqrt(n^2+x^2).
 	 * @since 2009-08-05
@@ -294,8 +283,7 @@ public class BigDecimalMath {
 	/**
 	 * The exponential function.
 	 * 
-	 * @param x
-	 *           the argument.
+	 * @param x the argument.
 	 * @return exp(x). The precision of the result is implicitly defined by the
 	 *         precision in the argument. In particular this means that
 	 *         "Invalid Operation" errors are thrown if catastrophic cancellation
@@ -392,8 +380,7 @@ public class BigDecimalMath {
 	/**
 	 * The base of the natural logarithm.
 	 * 
-	 * @param mc
-	 *           the required precision of the result
+	 * @param mc the required precision of the result
 	 * @return exp(1) = 2.71828....
 	 * @since 2009-05-29
 	 */
@@ -414,8 +401,7 @@ public class BigDecimalMath {
 	/**
 	 * The natural logarithm.
 	 * 
-	 * @param x
-	 *           the argument.
+	 * @param x the argument.
 	 * @return ln(x). The precision of the result is implicitly defined by the
 	 *         precision in the argument.
 	 * @since 2009-05-29
@@ -476,10 +462,8 @@ public class BigDecimalMath {
 	/**
 	 * The natural logarithm.
 	 * 
-	 * @param n
-	 *           The main argument, a strictly positive integer.
-	 * @param mc
-	 *           The requirements on the precision.
+	 * @param n The main argument, a strictly positive integer.
+	 * @param mc The requirements on the precision.
 	 * @return ln(n).
 	 * @since 2009-08-08
 	 * @author Richard J. Mathar
@@ -628,10 +612,8 @@ public class BigDecimalMath {
 	/**
 	 * The natural logarithm.
 	 * 
-	 * @param r
-	 *           The main argument, a strictly positive value.
-	 * @param mc
-	 *           The requirements on the precision.
+	 * @param r The main argument, a strictly positive value.
+	 * @param mc The requirements on the precision.
 	 * @return ln(r).
 	 * @since 2009-08-09
 	 * @author Richard J. Mathar
@@ -662,10 +644,8 @@ public class BigDecimalMath {
 	/**
 	 * Power function.
 	 * 
-	 * @param x
-	 *           Base of the power.
-	 * @param y
-	 *           Exponent of the power.
+	 * @param x Base of the power.
+	 * @param y Exponent of the power.
 	 * @return x^y. The estimation of the relative error in the result is
 	 *         |log(x)*err(y)|+|y*err(x)/x|
 	 * @since 2009-06-01
@@ -690,10 +670,8 @@ public class BigDecimalMath {
 	/**
 	 * Raise to an integer power and round.
 	 * 
-	 * @param x
-	 *           The base.
-	 * @param n
-	 *           The exponent.
+	 * @param x The base.
+	 * @param n The exponent.
 	 * @return x^n.
 	 * @since 2009-08-13
 	 * @since 2010-05-26 handle also n<0 cases.
@@ -726,10 +704,8 @@ public class BigDecimalMath {
 	/**
 	 * Raise to an integer power and round.
 	 * 
-	 * @param x
-	 *           The base.
-	 * @param n
-	 *           The exponent. The current implementation allows n only in the
+	 * @param x The base.
+	 * @param n The exponent. The current implementation allows n only in the
 	 *           interval of the standard int values.
 	 * @return x^n.
 	 * @since 2010-05-26
@@ -751,12 +727,10 @@ public class BigDecimalMath {
 	/**
 	 * Raise to a fractional power and round.
 	 * 
-	 * @param x
-	 *           The base. Generally enforced to be positive, with the exception
+	 * @param x The base. Generally enforced to be positive, with the exception
 	 *           of integer exponents where the sign is carried over according to
 	 *           the parity of the exponent.
-	 * @param q
-	 *           The exponent.
+	 * @param q The exponent.
 	 * @return x^q.
 	 * @since 2010-05-26
 	 */
@@ -851,8 +825,7 @@ public class BigDecimalMath {
 	/**
 	 * Trigonometric sine.
 	 * 
-	 * @param x
-	 *           The argument in radians.
+	 * @param x The argument in radians.
 	 * @return sin(x) in the range -1 to 1.
 	 * @since 2009-06-01
 	 */
@@ -931,8 +904,7 @@ public class BigDecimalMath {
 	/**
 	 * Trigonometric cosine.
 	 * 
-	 * @param x
-	 *           The argument in radians.
+	 * @param x The argument in radians.
 	 * @return cos(x) in the range -1 to 1.
 	 * @since 2009-06-01
 	 */
@@ -1011,8 +983,7 @@ public class BigDecimalMath {
 	/**
 	 * The trigonometric tangent.
 	 * 
-	 * @param x
-	 *           the argument in radians.
+	 * @param x the argument in radians.
 	 * @return the tan(x)
 	 */
 	static public BigDecimal tan(final BigDecimal x) {
@@ -1069,8 +1040,7 @@ public class BigDecimalMath {
 	/**
 	 * The trigonometric co-tangent.
 	 * 
-	 * @param x
-	 *           the argument in radians.
+	 * @param x the argument in radians.
 	 * @return the cot(x)
 	 * @since 2009-07-31
 	 */
@@ -1126,8 +1096,7 @@ public class BigDecimalMath {
 	/**
 	 * The inverse trigonometric sine.
 	 * 
-	 * @param x
-	 *           the argument.
+	 * @param x the argument.
 	 * @return the arcsin(x) in radians.
 	 */
 	static public BigDecimal asin(final BigDecimal x) {
@@ -1218,8 +1187,7 @@ public class BigDecimalMath {
 	/**
 	 * The inverse trigonometric cosine.
 	 * 
-	 * @param x
-	 *           the argument.
+	 * @param x the argument.
 	 * @return the arccos(x) in radians.
 	 * @since 2009-09-29
 	 */
@@ -1244,8 +1212,7 @@ public class BigDecimalMath {
 	/**
 	 * The inverse trigonometric tangent.
 	 * 
-	 * @param x
-	 *           the argument.
+	 * @param x the argument.
 	 * @return the principal value of arctan(x) in radians in the range -pi/2 to
 	 *         +pi/2.
 	 * @since 2009-08-03
@@ -1322,8 +1289,7 @@ public class BigDecimalMath {
 	/**
 	 * The hyperbolic cosine.
 	 * 
-	 * @param x
-	 *           The argument.
+	 * @param x The argument.
 	 * @return The cosh(x) = (exp(x)+exp(-x))/2 .
 	 * @author Richard J. Mathar
 	 * @since 2009-08-19
@@ -1384,8 +1350,7 @@ public class BigDecimalMath {
 	/**
 	 * The hyperbolic sine.
 	 * 
-	 * @param x
-	 *           the argument.
+	 * @param x the argument.
 	 * @return the sinh(x) = (exp(x)-exp(-x))/2 .
 	 * @author Richard J. Mathar
 	 * @since 2009-08-19
@@ -1453,8 +1418,7 @@ public class BigDecimalMath {
 	/**
 	 * The hyperbolic tangent.
 	 * 
-	 * @param x
-	 *           The argument.
+	 * @param x The argument.
 	 * @return The tanh(x) = sinh(x)/cosh(x).
 	 * @author Richard J. Mathar
 	 * @since 2009-08-20
@@ -1482,8 +1446,7 @@ public class BigDecimalMath {
 	/**
 	 * The inverse hyperbolic sine.
 	 * 
-	 * @param x
-	 *           The argument.
+	 * @param x The argument.
 	 * @return The arcsinh(x) .
 	 * @author Richard J. Mathar
 	 * @since 2009-08-20
@@ -1509,8 +1472,7 @@ public class BigDecimalMath {
 	/**
 	 * The inverse hyperbolic cosine.
 	 * 
-	 * @param x
-	 *           The argument.
+	 * @param x The argument.
 	 * @return The arccosh(x) .
 	 * @author Richard J. Mathar
 	 * @since 2009-08-20
@@ -1539,8 +1501,7 @@ public class BigDecimalMath {
 	/**
 	 * The Gamma function.
 	 * 
-	 * @param x
-	 *           The argument.
+	 * @param x The argument.
 	 * @return Gamma(x).
 	 * @since 2009-08-06
 	 */
@@ -1623,10 +1584,8 @@ public class BigDecimalMath {
 	/**
 	 * The Gamma function.
 	 * 
-	 * @param q
-	 *           The argument.
-	 * @param mc
-	 *           The required accuracy in the result.
+	 * @param q The argument.
+	 * @param mc The required accuracy in the result.
 	 * @return Gamma(x).
 	 * @since 2010-05-26
 	 */
@@ -1681,10 +1640,8 @@ public class BigDecimalMath {
 	/**
 	 * Pochhammer's function.
 	 * 
-	 * @param x
-	 *           The main argument.
-	 * @param n
-	 *           The non-negative index.
+	 * @param x The main argument.
+	 * @param n The non-negative index.
 	 * @return (x)_n = x(x+1)(x+2)*...*(x+n-1).
 	 * @since 2009-08-19
 	 */
@@ -1720,8 +1677,7 @@ public class BigDecimalMath {
 	/**
 	 * Reduce value to the interval [0,2*Pi].
 	 * 
-	 * @param x
-	 *           the original value
+	 * @param x the original value
 	 * @return the value modulo 2*pi in the interval from 0 to 2*pi.
 	 * @since 2009-06-01
 	 */
@@ -1758,8 +1714,7 @@ public class BigDecimalMath {
 	/**
 	 * Reduce value to the interval [-Pi/2,Pi/2].
 	 * 
-	 * @param x
-	 *           The original value
+	 * @param x The original value
 	 * @return The value modulo pi, shifted to the interval from -Pi/2 to Pi/2.
 	 * @since 2009-07-31
 	 */
@@ -1800,10 +1755,8 @@ public class BigDecimalMath {
 	/**
 	 * Riemann zeta function.
 	 * 
-	 * @param n
-	 *           The positive integer argument.
-	 * @param mc
-	 *           Specification of the accuracy of the result.
+	 * @param n The positive integer argument.
+	 * @param mc Specification of the accuracy of the result.
 	 * @return zeta(n).
 	 * @since 2009-08-05
 	 */
@@ -1955,8 +1908,7 @@ public class BigDecimalMath {
 	/**
 	 * Riemann zeta function.
 	 * 
-	 * @param n
-	 *           The positive integer argument.
+	 * @param n The positive integer argument.
 	 * @return zeta(n)-1.
 	 * @since 2009-08-20
 	 */
@@ -1987,8 +1939,7 @@ public class BigDecimalMath {
 	/**
 	 * trigonometric cot.
 	 * 
-	 * @param x
-	 *           The argument.
+	 * @param x The argument.
 	 * @return cot(x) = 1/tan(x).
 	 */
 	static public double cot(final double x) {
@@ -1998,8 +1949,7 @@ public class BigDecimalMath {
 	/**
 	 * Digamma function.
 	 * 
-	 * @param x
-	 *           The main argument.
+	 * @param x The main argument.
 	 * @return psi(x). The error is sometimes up to 10 ulp, where AS 6.3.15
 	 *         suffers from cancellation of digits and psi=0
 	 * @since 2009-08-26
@@ -2051,10 +2001,8 @@ public class BigDecimalMath {
 	/**
 	 * Broadhurst ladder sequence.
 	 * 
-	 * @param a
-	 *           The vector of 8 integer arguments
-	 * @param mc
-	 *           Specification of the accuracy of the result
+	 * @param a The vector of 8 integer arguments
+	 * @param mc Specification of the accuracy of the result
 	 * @return S_(n,p)(a)
 	 * @since 2009-08-09
 	 * @see <a href="http://arxiv.org/abs/math/9803067">arXiv:math/9803067</a>
@@ -2100,10 +2048,8 @@ public class BigDecimalMath {
 	/**
 	 * Add a BigDecimal and a BigInteger.
 	 * 
-	 * @param x
-	 *           The left summand
-	 * @param y
-	 *           The right summand
+	 * @param x The left summand
+	 * @param y The right summand
 	 * @return The sum x+y.
 	 * @since 2012-03-02
 	 */
@@ -2114,10 +2060,8 @@ public class BigDecimalMath {
 	/**
 	 * Add and round according to the larger of the two ulp's.
 	 * 
-	 * @param x
-	 *           The left summand
-	 * @param y
-	 *           The right summand
+	 * @param x The left summand
+	 * @param y The right summand
 	 * @return The sum x+y.
 	 * @since 2009-07-30
 	 */
@@ -2133,10 +2077,8 @@ public class BigDecimalMath {
 	/**
 	 * Add and round according to the larger of the two ulp's.
 	 * 
-	 * @param x
-	 *           The left summand
-	 * @param y
-	 *           The right summand
+	 * @param x The left summand
+	 * @param y The right summand
 	 * @return The sum x+y.
 	 * @since 2010-07-19
 	 */
@@ -2148,10 +2090,8 @@ public class BigDecimalMath {
 	/**
 	 * Add and round according to the larger of the two ulp's.
 	 * 
-	 * @param x
-	 *           The left summand
-	 * @param y
-	 *           The right summand
+	 * @param x The left summand
+	 * @param y The right summand
 	 * @return The sum x+y.
 	 * @since 2010-07-19
 	 */
@@ -2164,10 +2104,8 @@ public class BigDecimalMath {
 	/**
 	 * Subtract and round according to the larger of the two ulp's.
 	 * 
-	 * @param x
-	 *           The left term.
-	 * @param y
-	 *           The right term.
+	 * @param x The left term.
+	 * @param y The right term.
 	 * @return The difference x-y.
 	 * @since 2009-07-30
 	 */
@@ -2183,10 +2121,8 @@ public class BigDecimalMath {
 	/**
 	 * Subtract and round according to the larger of the two ulp's.
 	 * 
-	 * @param x
-	 *           The left summand
-	 * @param y
-	 *           The right summand
+	 * @param x The left summand
+	 * @param y The right summand
 	 * @return The difference x-y.
 	 * @since 2010-07-19
 	 */
@@ -2199,10 +2135,8 @@ public class BigDecimalMath {
 	/**
 	 * Multiply and round.
 	 * 
-	 * @param x
-	 *           The left factor.
-	 * @param y
-	 *           The right factor.
+	 * @param x The left factor.
+	 * @param y The right factor.
 	 * @return The product x*y.
 	 * @since 2009-07-30
 	 */
@@ -2218,10 +2152,8 @@ public class BigDecimalMath {
 	/**
 	 * Multiply and round.
 	 * 
-	 * @param x
-	 *           The left factor.
-	 * @param y
-	 *           The right factor.
+	 * @param x The left factor.
+	 * @param y The right factor.
 	 * @return The product x*y.
 	 * @since 2010-07-19
 	 */
@@ -2234,10 +2166,8 @@ public class BigDecimalMath {
 	/**
 	 * Multiply and round.
 	 * 
-	 * @param x
-	 *           The left factor.
-	 * @param y
-	 *           The right factor.
+	 * @param x The left factor.
+	 * @param y The right factor.
 	 * @return The product x*y.
 	 * @since 2010-07-19
 	 */
@@ -2250,10 +2180,8 @@ public class BigDecimalMath {
 	/**
 	 * Multiply and round.
 	 * 
-	 * @param x
-	 *           The left factor.
-	 * @param f
-	 *           The right factor.
+	 * @param x The left factor.
+	 * @param f The right factor.
 	 * @return The product x*f.
 	 * @since 2009-07-30
 	 */
@@ -2275,10 +2203,8 @@ public class BigDecimalMath {
 	/**
 	 * Multiply and round.
 	 * 
-	 * @param x
-	 *           The left factor.
-	 * @param n
-	 *           The right factor.
+	 * @param x The left factor.
+	 * @param n The right factor.
 	 * @return The product x*n.
 	 * @since 2009-07-30
 	 */
@@ -2293,10 +2219,8 @@ public class BigDecimalMath {
 	/**
 	 * Multiply and round.
 	 * 
-	 * @param x
-	 *           The left factor.
-	 * @param n
-	 *           The right factor.
+	 * @param x The left factor.
+	 * @param n The right factor.
 	 * @return the product x*n
 	 * @since 2009-07-30
 	 */
@@ -2311,10 +2235,8 @@ public class BigDecimalMath {
 	/**
 	 * Divide and round.
 	 * 
-	 * @param x
-	 *           The numerator
-	 * @param y
-	 *           The denominator
+	 * @param x The numerator
+	 * @param y The denominator
 	 * @return the divided x/y
 	 * @since 2009-07-30
 	 */
@@ -2333,8 +2255,7 @@ public class BigDecimalMath {
 	/**
 	 * Build the inverse and maintain the approximate accuracy.
 	 * 
-	 * @param z
-	 *           The denominator
+	 * @param z The denominator
 	 * @return The divided 1/z = [Re(z)-i*Im(z)]/ [Re^2 z + Im^2 z]
 	 * @since 2010-07-19
 	 */
@@ -2367,10 +2288,8 @@ public class BigDecimalMath {
 	/**
 	 * Divide and round.
 	 * 
-	 * @param x
-	 *           The numerator
-	 * @param y
-	 *           The denominator
+	 * @param x The numerator
+	 * @param y The denominator
 	 * @return the divided x/y
 	 * @since 2010-07-19
 	 */
@@ -2381,10 +2300,8 @@ public class BigDecimalMath {
 	/**
 	 * Divide and round.
 	 * 
-	 * @param x
-	 *           The numerator
-	 * @param n
-	 *           The denominator
+	 * @param x The numerator
+	 * @param n The denominator
 	 * @return the divided x/n
 	 * @since 2009-07-30
 	 */
@@ -2398,10 +2315,8 @@ public class BigDecimalMath {
 	/**
 	 * Divide and round.
 	 * 
-	 * @param x
-	 *           The numerator
-	 * @param n
-	 *           The denominator
+	 * @param x The numerator
+	 * @param n The denominator
 	 * @return the divided x/n
 	 * @since 2009-07-30
 	 */
@@ -2415,10 +2330,8 @@ public class BigDecimalMath {
 	/**
 	 * Divide and round.
 	 * 
-	 * @param n
-	 *           The numerator
-	 * @param x
-	 *           The denominator
+	 * @param n The numerator
+	 * @param x The denominator
 	 * @return the divided n/x
 	 * @since 2009-08-05
 	 */
@@ -2432,10 +2345,8 @@ public class BigDecimalMath {
 	/**
 	 * Divide and round.
 	 * 
-	 * @param n
-	 *           The numerator
-	 * @param x
-	 *           The denominator
+	 * @param n The numerator
+	 * @param x The denominator
 	 * @return the divided n/x
 	 * @since 2012-03-01
 	 */
@@ -2459,10 +2370,8 @@ public class BigDecimalMath {
 	/**
 	 * Divide and round.
 	 * 
-	 * @param n
-	 *           The numerator.
-	 * @param x
-	 *           The denominator.
+	 * @param n The numerator.
+	 * @param x The denominator.
 	 * @return the divided n/x.
 	 * @since 2009-08-05
 	 */
@@ -2477,10 +2386,8 @@ public class BigDecimalMath {
 	 * Append decimal zeros to the value. This returns a value which appears to
 	 * have a higher precision than the input.
 	 * 
-	 * @param x
-	 *           The input value
-	 * @param d
-	 *           The (positive) value of zeros to be added as least significant
+	 * @param x The input value
+	 * @param d The (positive) value of zeros to be added as least significant
 	 *           digits.
 	 * @return The same value as the input but with increased (pseudo) precision.
 	 */
@@ -2492,10 +2399,8 @@ public class BigDecimalMath {
 	 * Append decimal zeros to the value. This returns a value which appears to
 	 * have a higher precision than the input.
 	 * 
-	 * @param x
-	 *           The input value
-	 * @param d
-	 *           The (positive) value of zeros to be added as least significant
+	 * @param x The input value
+	 * @param d The (positive) value of zeros to be added as least significant
 	 *           digits.
 	 * @return The same value as the input but with increased (pseudo) precision.
 	 */
@@ -2507,10 +2412,8 @@ public class BigDecimalMath {
 	 * Boost the precision by appending decimal zeros to the value. This returns
 	 * a value which appears to have a higher precision than the input.
 	 * 
-	 * @param x
-	 *           The input value
-	 * @param mc
-	 *           The requirement on the minimum precision on return.
+	 * @param x The input value
+	 * @param mc The requirement on the minimum precision on return.
 	 * @return The same value as the input but with increased (pseudo) precision.
 	 */
 	static public BigDecimal scalePrec(final BigDecimal x , final MathContext mc) {
@@ -2526,10 +2429,8 @@ public class BigDecimalMath {
 	/**
 	 * Convert an absolute error to a precision.
 	 * 
-	 * @param x
-	 *           The value of the variable
-	 * @param xerr
-	 *           The absolute error in the variable
+	 * @param x The value of the variable
+	 * @param xerr The absolute error in the variable
 	 * @return The number of valid digits in x. The value is rounded down, and on
 	 *         the pessimistic side for that reason.
 	 * @since 2009-06-25
@@ -2541,11 +2442,9 @@ public class BigDecimalMath {
 	/**
 	 * Convert an absolute error to a precision.
 	 * 
-	 * @param x
-	 *           The value of the variable The value returned depends only on the
+	 * @param x The value of the variable The value returned depends only on the
 	 *           absolute value, not on the sign.
-	 * @param xerr
-	 *           The absolute error in the variable The value returned depends
+	 * @param xerr The absolute error in the variable The value returned depends
 	 *           only on the absolute value, not on the sign.
 	 * @return The number of valid digits in x. Derived from the representation
 	 *         x+- xerr, as if the error was represented in a "half width" (half
@@ -2563,8 +2462,7 @@ public class BigDecimalMath {
 	/**
 	 * Convert a relative error to a precision.
 	 * 
-	 * @param xerr
-	 *           The relative error in the variable. The value returned depends
+	 * @param xerr The relative error in the variable. The value returned depends
 	 *           only on the absolute value, not on the sign.
 	 * @return The number of valid digits in x. The value is rounded down, and on
 	 *         the pessimistic side for that reason.
@@ -2581,11 +2479,9 @@ public class BigDecimalMath {
 	 * Convert a precision (relative error) to an absolute error. The is the
 	 * inverse functionality of err2prec().
 	 * 
-	 * @param x
-	 *           The value of the variable The value returned depends only on the
+	 * @param x The value of the variable The value returned depends only on the
 	 *           absolute value, not on the sign.
-	 * @param prec
-	 *           The number of valid digits of the variable.
+	 * @param prec The number of valid digits of the variable.
 	 * @return the absolute error in x. Derived from the an accuracy of one half
 	 *         of the ulp.
 	 * @since 2009-08-09

@@ -305,7 +305,8 @@ public final class InputOutput {
 		}
 		closeOutput();
 		this.output = output;
-		pStream = new PrintStream(output);
+		if(output != null)
+			pStream = new PrintStream(output);
 	}
 	
 	public void setOutput(OutputStream outputStream , boolean writeToSTD) {
