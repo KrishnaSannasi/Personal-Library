@@ -196,7 +196,7 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 				builder.append(" ");
 			builder.append("[");
 			for(int i = 0; i < width; i++) {
-				builder.append(get(j , i));
+				builder.append(get(j , i).setScale(mc.getPrecision()));
 				if(i != width - 1)
 					builder.append(", ");
 			}
