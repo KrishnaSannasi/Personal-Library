@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 public class BigDecimal_INF extends BigDecimal {
 	public static final BigDecimal_INF	POS_INF	= new BigDecimal_INF(true) , NEG_INF = new BigDecimal_INF(false);
 	public static final BigDecimal_INF	ZERO		= new BigDecimal_INF(0);
+	public static final BigDecimal_INF	NEG_ONE		= new BigDecimal_INF(-1);
 	public static final BigDecimal_INF	ONE		= new BigDecimal_INF(1);
 	public static final BigDecimal_INF	TEN		= new BigDecimal_INF(10);
 	private boolean						isInfinite;
@@ -137,6 +138,11 @@ public class BigDecimal_INF extends BigDecimal {
 				return this;
 		else
 			return new BigDecimal_INF(super.subtract((BigDecimal) augend , mc));
+	}
+	
+	@Override
+	public BigDecimal_INF negate() {
+		return multiply(NEG_ONE);
 	}
 	
 	@Override
