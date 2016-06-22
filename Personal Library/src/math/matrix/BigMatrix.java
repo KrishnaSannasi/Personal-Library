@@ -11,7 +11,7 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 		this(new BigDecimal_INF[width][height]);
 	}
 	
-	private BigMatrix(BigDecimal_INF[][] matrix) {
+	public BigMatrix(BigDecimal_INF[][] matrix) {
 		super(matrix);
 		mc = MathContext.DECIMAL128;
 	}
@@ -30,7 +30,7 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 		
 		for(int i = 0; i < width; i++) {
 			for(int j = 0; j < height; j++) {
-				sum[i][j] = get(i , j).add(matrix.get(i , j));
+				sum[i][j] = get(i , j).add(matrix.get(i , j) , mc);
 			}
 		}
 		
@@ -46,7 +46,7 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 		
 		for(int i = 0; i < width; i++) {
 			for(int j = 0; j < height; j++) {
-				sum[i][j] = get(i , j).subtract(matrix.get(i , j));
+				sum[i][j] = get(i , j).subtract(matrix.get(i , j), mc);
 			}
 		}
 		
@@ -78,7 +78,7 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 			for(int j = 0; j < matrix.width; j++) {
 				product[i][j] = BigDecimal_INF.ZERO;
 				for(int ii = 0; ii < width; ii++) {
-					product[i][j] = get(i , ii).multiply(matrix.get(ii , j)).add(product[i][j]);
+					product[i][j] = get(i , ii).multiply(matrix.get(ii , j) , mc).add(product[i][j] , mc);
 				}
 			}
 		}
@@ -116,16 +116,16 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 		if(width == 1)
 			return get(0 , 0);
 		if(width == 2)
-			return get(0 , 0).multiply(get(1 , 1) , mc).subtract(get(1 , 0).multiply(get(0 , 1) , mc));
+			return get(0 , 0).multiply(get(1 , 1) , mc).subtract(get(1 , 0).multiply(get(0 , 1) , mc), mc);
 			
 		BigDecimal_INF det = BigDecimal_INF.ZERO;
 		
 		for(int i = 0; i < width; i++) {
 			BigDecimal_INF num = get(0 , i).multiply(adj(0 , i).det());
 			if(i % 2 == 0)
-				det = det.add(num);
+				det = det.add(num , mc);
 			else
-				det = det.subtract(num);
+				det = det.subtract(num , mc);
 		}
 		
 		return det;
@@ -138,10 +138,10 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 	
 	@Override
 	public BigMatrix transpose() {
-		BigDecimal_INF[][] matrix = new BigDecimal_INF[height][width];
+		BigDecimal_INF[][] matrix = new BigDecimal_INF[width][height];
 		
-		for(int i = 0; i < width; i++) {
-			for(int j = 0; j < height; j++) {
+		for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
 				matrix[j][i] = get(i , j);
 			}
 		}
@@ -196,7 +196,7 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 				builder.append(" ");
 			builder.append("[");
 			for(int i = 0; i < width; i++) {
-				builder.append(get(j , i).setScale(mc.getPrecision()));
+				builder.append(get(j , i).setScale(mc.getPrecision() , mc.getRoundingMode()));
 				if(i != width - 1)
 					builder.append(", ");
 			}
@@ -207,6 +207,10 @@ public class BigMatrix extends AbstractMatrix<BigDecimal_INF , BigMatrix> {
 				builder.append("]");
 		}
 		return builder.toString();
+	}
+	
+	public static BigMatrix createIdentityMatrix(int size) {
+		return new IdentityMatrix(size);
 	}
 	
 	private static class IdentityMatrix extends BigMatrix {

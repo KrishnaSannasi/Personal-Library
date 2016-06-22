@@ -5,7 +5,7 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
 		this(new Double[width][height]);
 	}
 	
-	private Matrix(Double[][] matrix) {
+	public Matrix(Double[][] matrix) {
 		super(matrix);
 	}
 	
@@ -189,6 +189,10 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
 				builder.append("]");
 		}
 		return builder.toString();
+	}
+	
+	public static Matrix createIdentityMatrix(int size) {
+		return new IdentityMatrix(size);
 	}
 	
 	private static class IdentityMatrix extends Matrix {

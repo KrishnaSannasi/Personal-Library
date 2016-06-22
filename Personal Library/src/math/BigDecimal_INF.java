@@ -7,10 +7,10 @@ import java.math.RoundingMode;
 public class BigDecimal_INF extends BigDecimal {
 	public static final BigDecimal_INF	POS_INF	= new BigDecimal_INF(true) , NEG_INF = new BigDecimal_INF(false);
 	public static final BigDecimal_INF	ZERO		= new BigDecimal_INF(0);
-	public static final BigDecimal_INF	NEG_ONE		= new BigDecimal_INF(-1);
+	public static final BigDecimal_INF	NEG_ONE	= new BigDecimal_INF(-1);
 	public static final BigDecimal_INF	ONE		= new BigDecimal_INF(1);
 	public static final BigDecimal_INF	TEN		= new BigDecimal_INF(10);
-	private boolean						isInfinite;
+	private boolean							isInfinite;
 	
 	private BigDecimal_INF(boolean isPositive) {
 		super(isPositive ? 1 : -1);
@@ -143,6 +143,43 @@ public class BigDecimal_INF extends BigDecimal {
 	@Override
 	public BigDecimal_INF negate() {
 		return multiply(NEG_ONE);
+	}
+	
+	@Override
+	public BigDecimal_INF negate(MathContext mc) {
+		return multiply(NEG_ONE , mc);
+	}
+	
+	@Override
+	public BigDecimal_INF max(BigDecimal val) {
+		if(compareTo(val) < 0)
+			return new BigDecimal_INF(val);
+		else
+			return this;
+	}
+	
+	@Override
+	public BigDecimal_INF min(BigDecimal val) {
+		if(compareTo(val) > 0)
+			return new BigDecimal_INF(val);
+		else
+			return this;
+	}
+	
+	@Override
+	public BigDecimal_INF abs() {
+		if(signum() < 0)
+			return negate();
+		else
+			return this;
+	}
+	
+	@Override
+	public BigDecimal_INF abs(MathContext mc) {
+		if(signum() < 0)
+			return negate(mc);
+		else
+			return multiply(ONE , mc);
 	}
 	
 	@Override
