@@ -70,7 +70,7 @@ public class ProgressFrame {
     
     private static boolean isBadDist(int r , int g , int b , Color color) {
         double dist = Math.sqrt(Math.pow(r - color.getRed() , 2) + Math.pow(g - color.getGreen() , 2) + Math.pow(b - color.getBlue() , 2));
-        return 75 > dist;
+        return (useGradient ? 75 : 30) > dist;
     }
     
     public static void update(int i) {
