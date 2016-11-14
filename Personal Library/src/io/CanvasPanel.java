@@ -44,7 +44,6 @@ public class CanvasPanel extends JPanel {
 			this.canvas.stop();
 			remove(this.canvas);
 		}
-		canvas.showFPS = true;
 		this.canvas = canvas;
 		add(canvas);
 		if(start)

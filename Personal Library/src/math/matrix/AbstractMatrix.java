@@ -5,7 +5,7 @@ import java.util.Arrays;
 abstract class AbstractMatrix<T extends Number , U extends AbstractMatrix<T , U>> {
     private final T[][] matrix;
     
-    public final int    width , height;
+    public final int    numOfCol , numOfRow;
     private boolean     immutable;
     
     public AbstractMatrix(T[][] matrix , boolean isImmutable) {
@@ -16,8 +16,8 @@ abstract class AbstractMatrix<T extends Number , U extends AbstractMatrix<T , U>
                 throw new IllegalArgumentException();
             }
         }
-        height = matrix.length;
-        width = height == 0 ? 0 : matrix[0].length;
+        numOfRow = matrix.length;
+        numOfCol = numOfRow == 0 ? 0 : matrix[0].length;
         this.immutable = isImmutable;
     }
     
@@ -48,15 +48,19 @@ abstract class AbstractMatrix<T extends Number , U extends AbstractMatrix<T , U>
     public abstract U invert();
     
     public final boolean isSquare() {
-        return width == height;
+        return numOfCol == numOfRow;
     }
     
     public final boolean equalDim(AbstractMatrix<T , U> other) {
-        return width == other.width && height == other.height;
+        return numOfCol == other.numOfCol && numOfRow == other.numOfRow;
     }
     
     public final void setImmutable() {
         immutable = true;
+    }
+    
+    public boolean isImmutable() {
+        return immutable;
     }
     
     public final T get(int row , int col) {
@@ -65,7 +69,9 @@ abstract class AbstractMatrix<T extends Number , U extends AbstractMatrix<T , U>
     
     public final T set(int row , int col , T val) {
         T old = get(row , col);
-        if(!immutable)
+        if(immutable)
+            throw new UnsupportedOperationException("Cannot modify immutable matrix");
+        else
             matrix[row][col] = val;
         return old;
     }
