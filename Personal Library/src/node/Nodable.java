@@ -1,5 +1,7 @@
 package node;
 
-public interface Nodable<V , E> {
-	void setNode(ValueNode<V , E> node);
+public interface Nodable<T extends Node<?>> {
+    void setNode(T node);
+    
+    T getNode();
 }

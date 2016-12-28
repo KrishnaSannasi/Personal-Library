@@ -1,6 +1,8 @@
 package node;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,9 +15,9 @@ import java.util.TreeSet;
  * 
  */
 public class Node<E> implements Comparable<Node<E>> {
-    public static int                       nextID = 0;
+    public static int                   nextID = 0;
     
-    public final int                        id;
+    public final int                    id;
     protected LinkedList<Connection<E>> connections;
     
     @SafeVarargs
@@ -47,29 +49,50 @@ public class Node<E> implements Comparable<Node<E>> {
     }
     
     @SafeVarargs
-    public static <E> LinkedList<Collection<Node<E>>> getGroups(Node<E>... nodes) {
-        LinkedList<Node<E>> nonprintedNodes = new LinkedList<>();
-        LinkedList<Collection<Node<E>>> groups = new LinkedList<>();
+    public static <V> LinkedList<Collection<Node<V>>> getGroups(Node<V>... nodes) {
+        LinkedList<Node<V>> nonprintedNodes = new LinkedList<>();
+        LinkedList<Collection<Node<V>>> groups = new LinkedList<>();
         
-        for(Node<E> node: nodes) {
+        for(Node<V> node: nodes) {
             nonprintedNodes.add(node);
         }
-        Collection<Node<E>> all;
+        Collection<Node<V>> all;
         for(int i = 0; i < nonprintedNodes.size();) {
             all = nonprintedNodes.get(i++).getAllConnections().keySet();
+            
             groups.add(all);
-            StringBuffer connections = new StringBuffer();
-            connections.delete(0 , connections.length());
-            connections.append(all.size()).append(" [");
-            for(Node<E> connection: all) {
-                connections.append(connection.getName()).append(", ");
-            }
-            connections.delete(connections.length() - 2 , connections.length());
-            connections.append(']');
             nonprintedNodes.removeAll(all);
-            if(all.size() != 0) {
+            
+            if(all.size() != 0)
                 i = 0;
-            }
+        }
+        return groups;
+    }
+    
+    @SafeVarargs
+    public static <V , N extends Nodable<? extends Node<V>>> LinkedList<Collection<N>> getGroups(N... nodes) {
+        HashMap<Node<V> , N> map = new HashMap<>();
+        LinkedList<N> unprocessedNodes = new LinkedList<>();
+        LinkedList<Collection<N>> groups = new LinkedList<>();
+        
+        for(N nodable: nodes) {
+            unprocessedNodes.add(nodable);
+            map.put(nodable.getNode() , nodable);
+        }
+        Collection<Node<V>> all;
+        Collection<N> allNodable = new HashSet<>();
+        
+        for(int i = 0; i < unprocessedNodes.size();) {
+            all = unprocessedNodes.get(i++).getNode().getAllConnections().keySet();
+            
+            allNodable.clear();
+            for(Node<V> node: all)
+                allNodable.add(map.get(node));
+            
+            groups.add(allNodable);
+            unprocessedNodes.removeAll(all);
+            if(all.size() != 0)
+                i = 0;
         }
         return groups;
     }
@@ -253,9 +276,9 @@ public class Node<E> implements Comparable<Node<E>> {
     private Link link;
     
     private class Link {
-        public Link        parent;
+        public Link    parent;
         public Node<E> node;
-        public int         depth;
+        public int     depth;
     }
     
     private void createLink(Link parent , int depth) {
