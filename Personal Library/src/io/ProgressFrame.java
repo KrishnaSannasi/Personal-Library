@@ -14,15 +14,7 @@ public class ProgressFrame {
     private static float        mr , mg , mb , br , bg , bb;
     
     static {
-        progressBar = new JProgressBar();
-        progressBar.setBorderPainted(false);
-        progressBar.setPreferredSize(new Dimension(250 , 50));
-        
-        frame = new JFrame();
-        frame.add(progressBar);
-        frame.pack();
-        progressBar.setBackground(Color.WHITE);
-        foreGround = progressBar.getForeground();
+        init();
     }
     
     public static void setMax(int max) {
@@ -84,5 +76,18 @@ public class ProgressFrame {
                 c = foreGround;
             progressBar.setForeground(c);
         }
+    }
+    
+    private static void init() {
+        progressBar = new JProgressBar();
+        progressBar.setBorderPainted(false);
+        progressBar.setPreferredSize(new Dimension(250 , 50));
+        
+        frame = new JFrame();
+        frame.add(progressBar);
+        frame.pack();
+        
+        progressBar.setBackground(Color.WHITE);
+        foreGround = progressBar.getForeground();
     }
 }

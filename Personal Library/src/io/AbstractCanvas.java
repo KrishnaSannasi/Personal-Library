@@ -159,7 +159,6 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
             while(fps > targetFPS && targetFPS != -1);
             deltaT = 1 / fps;
             lastFrameTime = System.nanoTime();
-            System.out.printf("-----%b-----\n" , showFPS);
             if(frame != null && showFPS)
                 frame.setTitle(String.format("FPS: %.3f   %d" , fps , targetFPS));
             tick();

@@ -170,6 +170,11 @@ public class BigDecimal_INF extends BigDecimal {
     }
     
     @Override
+    public BigDecimal_INF round(MathContext mc) {
+        return new BigDecimal_INF(super.round(mc));
+    }
+    
+    @Override
     public BigDecimal_INF abs() {
         if(signum() < 0)
             return negate();
