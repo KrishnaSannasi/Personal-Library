@@ -102,13 +102,13 @@ public class Node<E> implements Comparable<Node<E>> {
         LinkedList<Node<E>> path = new LinkedList<>() , temp;
         Node<E> current = start;
         for(Node<E> node: waypoints) {
-            temp = current.pathTo(node);
+            temp = current.getPath(node);
             if(temp == null)
                 return null;
             path.addAll(temp);
             current = node;
         }
-        temp = current.pathTo(find);
+        temp = current.getPath(find);
         if(temp == null)
             return null;
         path.addAll(temp);
@@ -121,7 +121,7 @@ public class Node<E> implements Comparable<Node<E>> {
      * @return null if there is no path and a list of nodes that is the path to
      *         the node
      */
-    public final LinkedList<Node<E>> pathTo(Node<E> find) {
+    public final LinkedList<Node<E>> getPath(Node<E> find) {
         return pathTo(find , new LinkedList<>());
     }
     
@@ -271,68 +271,5 @@ public class Node<E> implements Comparable<Node<E>> {
         if(this.connections.size() != 0)
             connections.delete(connections.length() - 2 , connections.length());
         return String.format("%s -> %s" , getName() , connections.toString());
-    }
-    
-    private Link link;
-    
-    private class Link {
-        public Link    parent;
-        public Node<E> node;
-        public int     depth;
-    }
-    
-    private void createLink(Link parent , int depth) {
-        link = new Link();
-        link.depth = depth;
-        link.parent = parent;
-        link.node = this;
-    }
-    
-    @SuppressWarnings("rawtypes")
-    public Node[] getPath(Node<E> find) {
-        TreeMap<Node<E> , Integer> deepStorage = new TreeMap<>();
-        TreeSet<Node<E>> uncheckedCurrent = new TreeSet<>() , uncheckedTemp = new TreeSet<>();
-        int depth = 1;
-        
-        createLink(null , 0);
-        
-        deepStorage.put(this , 0);
-        for(Connection<E> connection: this.connections) {
-            deepStorage.put(connection.getOther(this) , depth);
-            uncheckedCurrent.add(connection.getOther(this));
-            connection.getOther(this).createLink(link , depth);
-        }
-        
-        do {
-            ++depth;
-            for(Node<E> node: uncheckedCurrent) {
-                for(Connection<E> connection: node.connections) {
-                    Node<E> other = connection.getOther(node);
-                    if(!deepStorage.containsKey(other)) {
-                        deepStorage.put(other , depth);
-                        uncheckedTemp.add(other);
-                        other.createLink(node.link , depth);
-                        
-                        if(other == find) {
-                            Link link = other.link;
-                            Node[] path = new Node[depth + 1];
-                            while(link != null) {
-                                path[link.depth] = link.node;
-                                link = link.parent;
-                            }
-                            return path;
-                        }
-                    }
-                }
-            }
-            
-            TreeSet<Node<E>> temp = uncheckedTemp;
-            uncheckedTemp = uncheckedCurrent;
-            uncheckedCurrent = temp;
-            
-            uncheckedTemp.clear();
-        } while(uncheckedCurrent.size() != 0);
-        
-        return null;
     }
 }
