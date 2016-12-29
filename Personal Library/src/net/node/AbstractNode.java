@@ -1,6 +1,7 @@
 package net.node;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -106,6 +107,34 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
         return groups;
     }
     
+    @SafeVarargs
+    public static <C extends AbstractConnection<N> , N extends AbstractNode<C , N> , Y extends Nodable<N>> LinkedList<Collection<Y>> getGroups(Y... nodables) {
+        Map<N , Y> map = new HashMap<>();
+        LinkedList<Y> unprocessed = new LinkedList<>();
+        LinkedList<Collection<Y>> groups = new LinkedList<>();
+        
+        for(Y nodable: nodables) {
+            unprocessed.add(nodable);
+            map.put(nodable.getNode() , nodable);
+        }
+        Collection<N> all;
+        Collection<Y> allNodable = new LinkedList<>();
+        for(int i = 0; i < unprocessed.size();) {
+            all = getAllConnections(unprocessed.get(i++).getNode()).keySet();
+            
+            allNodable.clear();
+            for(N node: all)
+                allNodable.add(map.get(node));
+            
+            groups.add(allNodable);
+            unprocessed.removeAll(all);
+            
+            if(all.size() != 0)
+                i = 0;
+        }
+        return groups;
+    }
+    
     public final int        id;
     protected LinkedList<C> connections;
     
@@ -179,7 +208,7 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Node) {
+        if(obj instanceof NodeSimple) {
             return ((AbstractNode<C , N>) obj).id == id;
         }
         else if(obj instanceof Connection) {
