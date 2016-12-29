@@ -1,4 +1,6 @@
-package node;
+package net;
+
+import net.connection.Connection;
 
 public class ComparableConnection<E> extends Connection<E>implements Comparable<ComparableConnection<E>> {
 	public static boolean doAsending = true;

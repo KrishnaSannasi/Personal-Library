@@ -1,6 +1,9 @@
-package node;
+package net;
 
-public abstract class ComparableNode<V , E> extends ValueNode<V , E> {
+import net.node.Node;
+import net.node.NodeValue;
+
+public abstract class ComparableNode<V , E> extends NodeValue<V , E> {
 	public static boolean doAsending = true;
 	
 	public abstract int getComparableValue();

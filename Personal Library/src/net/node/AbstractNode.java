@@ -1,0 +1,206 @@
+package net.node;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import net.connection.AbstractConnection;
+import net.connection.Connection;
+
+public abstract class AbstractNode<C extends AbstractConnection<N> , N extends AbstractNode<C , N>> implements Comparable<N> {
+    public static int nextID = 0;
+    
+    public static final <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> Map<N , Integer> getAllConnections(N init) {
+        TreeMap<N , Integer> deepStorage = new TreeMap<>();
+        TreeSet<N> uncheckedCurrent = new TreeSet<>() , uncheckedTemp = new TreeSet<>();
+        int depth = 1;
+        deepStorage.put(init , 0);
+        for(C connection: init.connections) {
+            deepStorage.put(connection.getOther(init) , depth);
+            uncheckedCurrent.add(connection.getOther(init));
+        }
+        
+        do {
+            ++depth;
+            for(N node: uncheckedCurrent) {
+                for(C connection: node.connections) {
+                    N other = connection.getOther(node);
+                    if(!deepStorage.containsKey(other)) {
+                        deepStorage.put(other , depth);
+                        uncheckedTemp.add(other);
+                    }
+                }
+            }
+            
+            TreeSet<N> temp = uncheckedTemp;
+            uncheckedTemp = uncheckedCurrent;
+            uncheckedCurrent = temp;
+            
+            uncheckedTemp.clear();
+        } while(uncheckedCurrent.size() != 0);
+        
+        return deepStorage;
+    }
+    
+    /**
+     * Returns the path via connections to a desired node
+     * 
+     * @return null if there is no path and a list of nodes that is the path to
+     *         the node
+     */
+    public static final <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> LinkedList<N> getPath(N start , N find) {
+        return pathTo(start , find , new LinkedList<>());
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> LinkedList<N> pathTo(N start , N find , LinkedList<N> path) {
+        LinkedList<LinkedList<N>> allPaths = new LinkedList<>();
+        LinkedList<N> temp , arg;
+        
+        if(path.contains(start))
+            return null;
+        
+        path.add(start);
+        
+        if(start == find)
+            return path;
+        
+        for(C connection: start.connections) {
+            arg = new LinkedList<>();
+            arg.addAll(path);
+            temp = pathTo(connection.getOther(start) , find , arg);
+            if(temp != null)
+                allPaths.add(temp);
+        }
+        
+        LinkedList<N> min = null;
+        
+        for(LinkedList<N> tempPath: allPaths) {
+            if(tempPath.contains(find) && (min == null || min.size() > tempPath.size()))
+                min = tempPath;
+        }
+        
+        return min;
+    }
+    
+    @SafeVarargs
+    public static <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> LinkedList<Collection<N>> getGroups(N... nodes) {
+        LinkedList<N> nonprintedNodes = new LinkedList<>();
+        LinkedList<Collection<N>> groups = new LinkedList<>();
+        
+        for(N node: nodes) {
+            nonprintedNodes.add(node);
+        }
+        Collection<N> all;
+        for(int i = 0; i < nonprintedNodes.size();) {
+            all = getAllConnections(nonprintedNodes.get(i++)).keySet();
+            
+            groups.add(all);
+            nonprintedNodes.removeAll(all);
+            
+            if(all.size() != 0)
+                i = 0;
+        }
+        return groups;
+    }
+    
+    public final int        id;
+    protected LinkedList<C> connections;
+    
+    @SafeVarargs
+    public AbstractNode(N... connections) {
+        id = nextID++;
+        this.connections = new LinkedList<>();
+        addConnections(connections);
+    }
+    
+    public final AbstractConnection<N> getConnection(N node) {
+        for(AbstractConnection<N> connection: connections) {
+            if(connection.equals(node))
+                return connection;
+        }
+        return null;
+    }
+    
+    public final int getNumberOfConnections() {
+        return connections.size();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public final AbstractConnection<N>[] getConnections() {
+        return connections.toArray(new AbstractConnection[connections.size()]);
+    }
+    
+    public final boolean hasConnectionWith(N node) {
+        return connections.contains(node);
+    }
+    
+    public abstract AbstractConnection<N> addConnection(N node);
+    
+    public final void removeConnection(N node) {
+        connections.remove(node);
+        node.connections.remove(this);
+    }
+    
+    public final void removeConnection(C conn) {
+        conn.nodeLeft.connections.remove(conn);
+        conn.nodeRight.connections.remove(conn);
+    }
+    
+    @SafeVarargs
+    public final void addConnections(N... connections) {
+        for(N connection: connections) {
+            addConnection(connection);
+        }
+    }
+    
+    @SafeVarargs
+    public final void removeConnections(N... connections) {
+        for(N connection: connections) {
+            removeConnection(connection);
+        }
+    }
+    
+    public final void clearConnections() {
+        for(C connection: connections) {
+            removeConnection(connection);
+        }
+    }
+    
+    public String getName() {
+        return "A-Node " + id;
+    }
+    
+    @Override
+    public int compareTo(N node) {
+        return (int) Math.signum(id - node.id);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Node) {
+            return ((AbstractNode<C , N>) obj).id == id;
+        }
+        else if(obj instanceof Connection) {
+            return equals(((AbstractConnection<N>) obj).nodeLeft) || equals(((AbstractConnection<N>) obj).nodeRight);
+        }
+        else {
+            return false;
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public final String toString() {
+        StringBuffer connections = new StringBuffer();
+        for(C connection: this.connections) {
+            connections.append(connection.getOther((N) this).getName()).append(", ");
+        }
+        if(this.connections.size() != 0)
+            connections.delete(connections.length() - 2 , connections.length());
+        return String.format("%s -> {%s}" , getName() , connections.toString());
+    }
+}

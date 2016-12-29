@@ -1,8 +1,10 @@
-package node;
+package net;
 
+import net.node.Node;
+import net.node.NodeValue;
 import property.propertyset.PropertySet;
 
-public class PropertiesNode<V , E> extends ValueNode<V , PropertySet<E>> {
+public class PropertiesNode<V , E> extends NodeValue<V , PropertySet<E>> {
 	@SafeVarargs
 	public PropertiesNode(Node<V>... connections) {
 		super(new PropertySet<>() , connections);

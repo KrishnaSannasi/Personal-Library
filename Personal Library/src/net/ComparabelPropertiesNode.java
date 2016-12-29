@@ -1,8 +1,10 @@
-package node;
+package net;
 
+import net.node.Node;
+import net.node.NodeValue;
 import property.propertyset.ComparablePropertySet;
 
-public class ComparabelPropertiesNode<V,E extends Comparable<E>> extends ValueNode<V,ComparablePropertySet<E>> {
+public class ComparabelPropertiesNode<V,E extends Comparable<E>> extends NodeValue<V,ComparablePropertySet<E>> {
 	@SafeVarargs
 	public ComparabelPropertiesNode(Node<V>... connections) {
 		super(connections);
