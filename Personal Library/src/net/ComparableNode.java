@@ -1,6 +1,6 @@
 package net;
 
-import net.node.Node;
+import net.node.NodeSimple;
 import net.node.NodeValue;
 
 public abstract class ComparableNode<V , E> extends NodeValue<V , E> {
@@ -9,7 +9,7 @@ public abstract class ComparableNode<V , E> extends NodeValue<V , E> {
 	public abstract int getComparableValue();
 	
 	@Override
-	public final int compareTo(Node<V> compare) {
+	public final int compareTo(NodeSimple<V> compare) {
 		try {
 			@SuppressWarnings("unchecked")
 			ComparableNode<V , E> o = (ComparableNode<V , E>) compare;
