@@ -24,6 +24,12 @@ public class NodeValue<C , V> extends AbstractNode<ConnectionValue<C , V> , Node
             return getConnection(node);
     }
     
+    @SuppressWarnings("unchecked")
+    @Override
+    public ConnectionValue<C , V>[] getConnections() {
+        return connections.toArray(new ConnectionValue[connections.size()]);
+    }
+    
     public void setValue(V value) {
         this.value = value;
     }

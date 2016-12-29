@@ -23,4 +23,9 @@ public class Node extends AbstractNode<Connection , Node> {
         else
             return getConnection(node);
     }
+
+    @Override
+    public Connection[] getConnections() {
+        return connections.toArray(new Connection[connections.size()]);
+    }
 }

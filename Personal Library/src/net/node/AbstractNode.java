@@ -129,9 +129,7 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
     }
     
     @SuppressWarnings("unchecked")
-    public final AbstractConnection<N>[] getConnections() {
-        return connections.toArray(new AbstractConnection[connections.size()]);
-    }
+    public abstract C[] getConnections();
     
     public final boolean hasConnectionWith(N node) {
         return connections.contains(node);
