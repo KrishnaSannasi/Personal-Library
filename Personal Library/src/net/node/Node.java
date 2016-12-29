@@ -1,6 +1,5 @@
 package net.node;
 
-import net.connection.AbstractConnection;
 import net.connection.Connection;
 
 /**
@@ -11,7 +10,7 @@ import net.connection.Connection;
  */
 public class Node extends AbstractNode<Connection , Node> {
     @Override
-    public AbstractConnection<Node> addConnection(Node node) {
+    public Connection addConnection(Node node) {
         if(node == this)
             return null;
         else if(!connections.contains(node)) {

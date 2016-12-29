@@ -116,8 +116,8 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
         addConnections(connections);
     }
     
-    public final AbstractConnection<N> getConnection(N node) {
-        for(AbstractConnection<N> connection: connections) {
+    public final C getConnection(N node) {
+        for(C connection: connections) {
             if(connection.equals(node))
                 return connection;
         }
@@ -135,7 +135,7 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
         return connections.contains(node);
     }
     
-    public abstract AbstractConnection<N> addConnection(N node);
+    public abstract C addConnection(N node);
     
     public final void removeConnection(N node) {
         connections.remove(node);

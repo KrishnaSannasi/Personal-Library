@@ -1,6 +1,5 @@
 package net.node;
 
-import net.connection.AbstractConnection;
 import net.connection.ConnectionValue;
 
 public class NodeValue<C , V> extends AbstractNode<ConnectionValue<C , V> , NodeValue<C , V>> {
@@ -11,7 +10,7 @@ public class NodeValue<C , V> extends AbstractNode<ConnectionValue<C , V> , Node
     }
     
     @Override
-    public AbstractConnection<NodeValue<C , V>> addConnection(NodeValue<C , V> node) {
+    public ConnectionValue<C , V> addConnection(NodeValue<C , V> node) {
         if(node == this)
             return null;
         else if(!connections.contains(node)) {
