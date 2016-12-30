@@ -8,7 +8,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import net.connection.AbstractConnection;
-import net.connection.Connection;
 
 public abstract class AbstractNode<C extends AbstractConnection<N> , N extends AbstractNode<C , N>> implements Comparable<N> {
     public static int nextID = 0;
@@ -52,26 +51,29 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
      *         the node
      */
     public static final <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> LinkedList<N> getPath(N start , N find) {
-        return pathTo(start , find , new LinkedList<>());
+        if(start == null || find == null)
+            return null;
+        else
+            return getPath(start , find , new LinkedList<>());
     }
     
     @SuppressWarnings("unchecked")
-    private static <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> LinkedList<N> pathTo(N start , N find , LinkedList<N> path) {
+    private static <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> LinkedList<N> getPath(N current , N find , LinkedList<N> path) {
+        if(path.contains(current))
+            return null;
+        
+        path.add(current);
+        
+        if(current == find)
+            return path;
+        
         LinkedList<LinkedList<N>> allPaths = new LinkedList<>();
         LinkedList<N> temp , arg;
         
-        if(path.contains(start))
-            return null;
-        
-        path.add(start);
-        
-        if(start == find)
-            return path;
-        
-        for(C connection: start.connections) {
+        for(C connection: current.connections) {
             arg = new LinkedList<>();
             arg.addAll(path);
-            temp = pathTo(connection.getOther(start) , find , arg);
+            temp = getPath(connection.getOther(current) , find , arg);
             if(temp != null)
                 allPaths.add(temp);
         }
@@ -88,18 +90,18 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
     
     @SafeVarargs
     public static <C extends AbstractConnection<N> , N extends AbstractNode<C , N>> LinkedList<Collection<N>> getGroups(N... nodes) {
-        LinkedList<N> nonprintedNodes = new LinkedList<>();
+        LinkedList<N> unprocessed = new LinkedList<>();
         LinkedList<Collection<N>> groups = new LinkedList<>();
         
         for(N node: nodes) {
-            nonprintedNodes.add(node);
+            unprocessed.add(node);
         }
         Collection<N> all;
-        for(int i = 0; i < nonprintedNodes.size();) {
-            all = getAllConnections(nonprintedNodes.get(i++)).keySet();
+        for(int i = 0; i < unprocessed.size();) {
+            all = getAllConnections(unprocessed.get(i++)).keySet();
             
             groups.add(all);
-            nonprintedNodes.removeAll(all);
+            unprocessed.removeAll(all);
             
             if(all.size() != 0)
                 i = 0;
@@ -110,19 +112,18 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
     @SafeVarargs
     public static <C extends AbstractConnection<N> , N extends AbstractNode<C , N> , Y extends Nodable<N>> LinkedList<Collection<Y>> getGroups(Y... nodables) {
         Map<N , Y> map = new HashMap<>();
-        LinkedList<Y> unprocessed = new LinkedList<>();
+        LinkedList<N> unprocessed = new LinkedList<>();
         LinkedList<Collection<Y>> groups = new LinkedList<>();
         
         for(Y nodable: nodables) {
-            unprocessed.add(nodable);
+            unprocessed.add(nodable.getNode());
             map.put(nodable.getNode() , nodable);
         }
         Collection<N> all;
-        Collection<Y> allNodable = new LinkedList<>();
         for(int i = 0; i < unprocessed.size();) {
-            all = getAllConnections(unprocessed.get(i++).getNode()).keySet();
+            all = getAllConnections(unprocessed.get(i++)).keySet();
+            Collection<Y> allNodable = new LinkedList<>();
             
-            allNodable.clear();
             for(N node: all)
                 allNodable.add(map.get(node));
             
@@ -208,11 +209,11 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof NodeSimple) {
+        if(obj instanceof AbstractNode) {
             return ((AbstractNode<C , N>) obj).id == id;
         }
-        else if(obj instanceof Connection) {
-            return equals(((AbstractConnection<N>) obj).nodeLeft) || equals(((AbstractConnection<N>) obj).nodeRight);
+        else if(obj instanceof AbstractConnection) {
+            return obj.equals(this);
         }
         else {
             return false;

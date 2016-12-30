@@ -2,7 +2,7 @@ package io;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -22,7 +22,7 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
     private volatile HashMap<Integer , Boolean> keyMap;
     public final Dimension                      DIMENTION;
     private BufferStrategy                      strategy;
-    protected JFrame                            frame;
+    public JFrame                            frame;
     public double                               deltaT;
     
     private volatile boolean                    done;
@@ -84,7 +84,7 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
     
     public abstract void tick();
     
-    public abstract void render(Graphics g);
+    public abstract void  render(Graphics2D g);
     
     public boolean isUpPressed() {
         return useARROW && getKey(KeyEvent.VK_UP) || useWASD && getKey(KeyEvent.VK_W);

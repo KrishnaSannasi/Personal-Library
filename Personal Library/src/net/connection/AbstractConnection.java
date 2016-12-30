@@ -21,7 +21,7 @@ public abstract class AbstractConnection<N extends AbstractNode<? , N>> {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof AbstractNode) {
-            return nodeLeft == obj || nodeRight == obj;
+            return nodeLeft.equals(obj) || nodeRight.equals(obj);
         }
         else if(obj instanceof Connection) {
             return obj.equals(nodeLeft) && obj.equals(nodeRight);

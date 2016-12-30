@@ -37,7 +37,7 @@ public class CanvasPanel extends JPanel {
     }
     
     public void setCanvas(AbstractCanvas canvas) {
-        setCanvas(canvas , !this.canvas.isDone());
+        setCanvas(canvas , false);
     }
     
     public void setCanvas(AbstractCanvas canvas , boolean start) {
