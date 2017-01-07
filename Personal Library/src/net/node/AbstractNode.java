@@ -165,6 +165,10 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
         return connections.contains(node);
     }
     
+    public final C addConnection(Nodable<N> nodable) {
+        return addConnection(nodable.getNode());
+    }
+    
     public abstract C addConnection(N node);
     
     public final void removeConnection(N node) {

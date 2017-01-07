@@ -325,7 +325,7 @@ public class ImageProcessor {
 			}
 			
 			@Override
-			public void render(Graphics g) {
+			public void render(Graphics2D g) {
 				printTime("REDNER");
 				g.clearRect(0 , 0 , getWidth() , getHeight());
 				switch(next % 3) {
