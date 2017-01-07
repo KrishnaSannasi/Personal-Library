@@ -9,6 +9,11 @@ public class NodeValue<C , V> extends AbstractNode<ConnectionValue<C , V> , Node
         setValue(value);
     }
     
+    @SafeVarargs
+    public NodeValue(NodeValue<C , V>... nodes) {
+        super(nodes);
+    }
+    
     @Override
     public ConnectionValue<C , V> addConnection(NodeValue<C , V> node) {
         if(node == this)

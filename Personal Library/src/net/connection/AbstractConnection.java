@@ -23,7 +23,7 @@ public abstract class AbstractConnection<N extends AbstractNode<? , N>> {
         if(obj instanceof AbstractNode) {
             return nodeLeft.equals(obj) || nodeRight.equals(obj);
         }
-        else if(obj instanceof Connection) {
+        else if(obj instanceof ConnectionSimple) {
             return obj.equals(nodeLeft) && obj.equals(nodeRight);
         }
         return super.equals(obj);

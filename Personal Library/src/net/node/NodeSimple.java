@@ -1,6 +1,6 @@
 package net.node;
 
-import net.connection.Connection;
+import net.connection.ConnectionSimple;
 
 /**
  * Represents a node in a network of connections
@@ -8,13 +8,13 @@ import net.connection.Connection;
  * @author Krishna
  * 
  */
-public class NodeSimple extends AbstractNode<Connection , NodeSimple> {
+public class NodeSimple extends AbstractNode<ConnectionSimple , NodeSimple> {
     @Override
-    public Connection addConnection(NodeSimple node) {
+    public ConnectionSimple addConnection(NodeSimple node) {
         if(node == this)
             return null;
         else if(!connections.contains(node)) {
-            Connection conn = new Connection(this , node);
+            ConnectionSimple conn = new ConnectionSimple(this , node);
             connections.add(conn);
             node.connections.add(conn);
             return conn;
@@ -24,7 +24,7 @@ public class NodeSimple extends AbstractNode<Connection , NodeSimple> {
     }
 
     @Override
-    public Connection[] getConnections() {
-        return connections.toArray(new Connection[connections.size()]);
+    public ConnectionSimple[] getConnections() {
+        return connections.toArray(new ConnectionSimple[connections.size()]);
     }
 }
