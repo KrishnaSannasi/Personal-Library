@@ -133,14 +133,19 @@ public class BigDecimal_INF extends BigDecimal {
             return new BigDecimal_INF(super.subtract((BigDecimal) augend));
     }
     
-    public BigDecimal_INF subtract(BigDecimal_INF augend , MathContext mc) {
-        if(isInfinite)
-            if(augend.isInfinite && signum() != augend.signum())
-                throw new ArithmeticException("+INF - INF = Undefined");
-            else
+    public BigDecimal_INF subtract(BigDecimal_INF subtrahend , MathContext mc) {
+        if(isInfinite || subtrahend.isInfinite)
+            if(isInfinite ^ subtrahend.isInfinite)
+                if(isInfinite)
+                    return this;
+                else
+                    return subtrahend.negate();
+            else if(signum() == subtrahend.signum())
                 return this;
+            else
+                throw new ArithmeticException("+INF - INF = Undefined");
         else
-            return new BigDecimal_INF(super.subtract((BigDecimal) augend , mc));
+            return new BigDecimal_INF(super.subtract((BigDecimal) subtrahend , mc));
     }
     
     @Override
@@ -171,6 +176,8 @@ public class BigDecimal_INF extends BigDecimal {
     
     @Override
     public BigDecimal_INF round(MathContext mc) {
+        if(isInfinite)
+            return this;
         return new BigDecimal_INF(super.round(mc));
     }
     
@@ -235,7 +242,13 @@ public class BigDecimal_INF extends BigDecimal {
         else if(x instanceof BigDecimal) {
             return !isInfinite && super.equals(x);
         }
-        return super.equals(x);
+        if(x instanceof Number) {
+            Number dx = (Number) x;
+            return doubleValue() == dx.doubleValue();
+        }
+        else {
+            return super.equals(x);
+        }
     }
     
     @Override

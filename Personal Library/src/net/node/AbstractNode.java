@@ -2,6 +2,7 @@ package net.node;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -146,6 +147,10 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
         addConnections(connections);
     }
     
+    public final C getConnection(Nodable<N> n) {
+        return getConnection(n.getNode());
+    }
+    
     public final C getConnection(N node) {
         for(C connection: connections) {
             if(connection.equals(node))
@@ -161,15 +166,59 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
     @SuppressWarnings("unchecked")
     public abstract C[] getConnections();
     
+    public final boolean hasConnectionWith(Nodable<N> n) {
+        return hasConnectionWith(n.getNode());
+    }
+    
     public final boolean hasConnectionWith(N node) {
         return connections.contains(node);
+    }
+    
+    public final boolean hasDeepConnectionWith(Nodable<N> n) {
+        return hasDeepConnectionWith(n.getNode());
+    }
+    
+    public final boolean hasDeepConnectionWith(N node) {
+        return hasDeepConnectionWith(node , new HashSet<>());
+    }
+    
+    @SuppressWarnings("unchecked")
+    final boolean hasDeepConnectionWith(N node , HashSet<N> complete) {
+        if(hasConnectionWith(node))
+            return true;
+        else if(complete.contains(this))
+            return false;
+        else
+            complete.add((N) this);
+        for(C c: connections) {
+            if(c.getOther((N) this).hasDeepConnectionWith(node , complete))
+                return true;
+        }
+        return false;
     }
     
     public final C addConnection(Nodable<N> nodable) {
         return addConnection(nodable.getNode());
     }
     
-    public abstract C addConnection(N node);
+    public final C addConnection(N node) {
+        if(node == this)
+            return null;
+        else if(!connections.contains(node)) {
+            C conn = createConnection(node);
+            connections.add(conn);
+            node.connections.add(conn);
+            return conn;
+        }
+        else
+            return getConnection(node);
+    }
+    
+    protected abstract C createConnection(N node);
+    
+    public final void removeConnection(Nodable<N> n) {
+        removeConnection(n.getNode());
+    }
     
     public final void removeConnection(N node) {
         connections.remove(node);
@@ -195,10 +244,23 @@ public abstract class AbstractNode<C extends AbstractConnection<N> , N extends A
         }
     }
     
-    public final void clearConnections() {
-        for(C connection: connections) {
+    @SafeVarargs
+    public final void addConnections(Nodable<N>... connections) {
+        for(Nodable<N> connection: connections) {
+            addConnection(connection);
+        }
+    }
+    
+    @SafeVarargs
+    public final void removeConnections(Nodable<N>... connections) {
+        for(Nodable<N> connection: connections) {
             removeConnection(connection);
         }
+    }
+    
+    public final void clearConnections() {
+        for(C connection: connections)
+            removeConnection(connection);
     }
     
     public String getName() {

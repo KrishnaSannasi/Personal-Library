@@ -10,17 +10,8 @@ import net.connection.ConnectionSimple;
  */
 public class NodeSimple extends AbstractNode<ConnectionSimple , NodeSimple> {
     @Override
-    public ConnectionSimple addConnection(NodeSimple node) {
-        if(node == this)
-            return null;
-        else if(!connections.contains(node)) {
-            ConnectionSimple conn = new ConnectionSimple(this , node);
-            connections.add(conn);
-            node.connections.add(conn);
-            return conn;
-        }
-        else
-            return getConnection(node);
+    public ConnectionSimple createConnection(NodeSimple node) {
+        return new ConnectionSimple(this , node);
     }
 
     @Override

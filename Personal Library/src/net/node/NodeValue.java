@@ -15,17 +15,8 @@ public class NodeValue<C , V> extends AbstractNode<ConnectionValue<C , V> , Node
     }
     
     @Override
-    public ConnectionValue<C , V> addConnection(NodeValue<C , V> node) {
-        if(node == this)
-            return null;
-        else if(!connections.contains(node)) {
-            ConnectionValue<C , V> conn = new ConnectionValue<>(null , this , node);
-            connections.add(conn);
-            node.connections.add(conn);
-            return conn;
-        }
-        else
-            return getConnection(node);
+    public ConnectionValue<C , V> createConnection(NodeValue<C , V> node) {
+        return new ConnectionValue<>(null , this , node);
     }
     
     @SuppressWarnings("unchecked")
