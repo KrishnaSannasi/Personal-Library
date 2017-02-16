@@ -1,19 +1,26 @@
 package game.resistances;
 
 import game.damage.Damage;
-import game.damage.physical.DamagePhysical;
 
-public class ResistancePhysical extends Resistance {
+public class ResistanceFatigue extends Resistance {
+    private double blk;
     private double resist;
     
-    public ResistancePhysical(double resist) {
+    public ResistanceFatigue(double block , double resist) {
+        this.blk = block;
         this.resist = resist;
-        
-        addValidDamageTypes(DamagePhysical.class);
+    }
+    
+    public double getBlock() {
+        return blk;
     }
     
     public double getResist() {
         return resist;
+    }
+    
+    public void setBlock(double block) {
+        this.blk = block;
     }
     
     public void setResist(double resist) {
@@ -22,6 +29,7 @@ public class ResistancePhysical extends Resistance {
     
     @Override
     protected double getRawModifier(Damage damage) {
-        return damage.getRawValue() * resist;
+        return damage.getRawValue() * resist + blk;
     }
+    
 }

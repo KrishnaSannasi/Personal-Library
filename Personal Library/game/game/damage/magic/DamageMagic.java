@@ -1,9 +1,10 @@
-package game.damage;
+package game.damage.magic;
 
+import game.damage.Damage;
 import game.entity.EntityCharacter;
 
 public class DamageMagic extends Damage {
-    double value;
+    private double value;
     
     public DamageMagic(EntityCharacter victim , double value) {
         super(victim);

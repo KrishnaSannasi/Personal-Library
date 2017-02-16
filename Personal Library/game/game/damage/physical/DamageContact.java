@@ -1,5 +1,6 @@
-package game.damage;
+package game.damage.physical;
 
+import game.damage.Damage;
 import game.entity.EntityCharacter;
 
 public class DamageContact extends Damage {

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import javax.swing.JFrame;
 
 public abstract class AbstractCanvas extends Canvas implements Runnable , KeyListener , MouseListener , MouseMotionListener , MouseWheelListener {
-    private static final long                   serialVersionUID = -2757654850592996937L;
+    private static final long serialVersionUID = -2757654850592996937L;
     
     private volatile HashMap<Integer , Boolean> keyMap;
     public final Dimension                      DIMENTION;
@@ -25,10 +25,10 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
     public JFrame                               frame;
     public double                               deltaT;
     
-    private volatile boolean                    done;
-    public volatile boolean                     showFPS          = false , useWASD = true , useARROW = true;
-    protected volatile int                      targetFPS        = 20;
-    protected int                               SHOW_WIDTH , SHOW_HEIGHT;
+    private volatile boolean done;
+    public volatile boolean  showFPS   = false , useWASD = true , useARROW = true;
+    protected volatile int   targetFPS = 20;
+    protected int            SHOW_WIDTH , SHOW_HEIGHT;
     
     public AbstractCanvas(int width , int height) {
         this(width , height , width , height);
@@ -176,6 +176,11 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
             }
             Thread.yield();
         }
+    }
+    
+    public void clearScreen(Graphics2D g) {
+        g.setColor(getBackground());
+        g.fillRect(0 , 0 , getWidth() , getHeight());
     }
     
     @Override

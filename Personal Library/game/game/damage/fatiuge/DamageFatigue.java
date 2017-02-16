@@ -1,12 +1,12 @@
-package game.damage.physical;
+package game.damage.fatiuge;
 
 import game.damage.Damage;
 import game.entity.EntityCharacter;
 
-public class DamagePhysical extends Damage {
+public class DamageFatigue extends Damage {
     private double value;
     
-    public DamagePhysical(EntityCharacter victim , double value) {
+    public DamageFatigue(EntityCharacter victim , double value) {
         super(victim);
         
         this.value = value;
@@ -16,5 +16,6 @@ public class DamagePhysical extends Damage {
     public double getRawValue() {
         return value;
     }
+    
     
 }

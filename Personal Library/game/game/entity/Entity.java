@@ -5,8 +5,8 @@ import game.collision.CollisionBox;
 public abstract class Entity {
     private CollisionBox<?> collisionBox;
     
-    private double       x , y , z;
-    private boolean      isAffectedByGravity;
+    private double          x , y , z;
+    private boolean         isAffectedByGravity;
     
     public Entity(double x , double y , double z , boolean isAffectedByGravity) {
         this.x = x;
@@ -36,4 +36,6 @@ public abstract class Entity {
     }
     
     public abstract void update();
+    
+    public abstract void collide(Entity e);
 }

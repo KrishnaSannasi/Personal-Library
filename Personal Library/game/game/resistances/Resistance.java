@@ -11,8 +11,10 @@ public abstract class Resistance {
         validDamageTypes = new HashSet<>();
     }
     
-    protected final void addValidDamageType(Class<? extends Damage> damageType) {
-        validDamageTypes.add(damageType);
+    @SafeVarargs
+    protected final void addValidDamageTypes(Class<? extends Damage>... damageTypes) {
+        for(Class<? extends Damage> d: damageTypes)
+            validDamageTypes.add(d);
     }
     
     public boolean isValidDamageType(Class<? extends Damage> damageType) {
