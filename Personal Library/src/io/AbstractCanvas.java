@@ -20,10 +20,12 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
     private static final long serialVersionUID = -2757654850592996937L;
     
     private volatile HashMap<Integer , Boolean> keyMap;
-    public final Dimension                      DIMENTION;
-    private BufferStrategy                      strategy;
-    public JFrame                               frame;
-    public double                               deltaT;
+    
+    public final Dimension DIMENTION;
+    private BufferStrategy strategy;
+    public JFrame          frame;
+    
+    private double deltaT;
     
     private volatile boolean done;
     public volatile boolean  showFPS   = false , useWASD = true , useARROW = true;
@@ -86,7 +88,7 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
         this(dim.width , dim.height);
     }
     
-    public abstract void tick();
+    public abstract void tick(double deltaT);
     
     public abstract void render(Graphics2D g);
     
@@ -154,6 +156,8 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
             return;
         }
         strategy = getBufferStrategy();
+        double catchUp = 0;
+        
         while(!done) {
             BufferedImage image = new BufferedImage(getWidth() , getHeight() , BufferedImage.TYPE_INT_ARGB);
             do {
@@ -161,10 +165,24 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
                 fps = 1000000000. / (thisFrameTime - lastFrameTime);
             } while(fps > targetFPS && targetFPS != -1);
             deltaT = 1 / fps;
+            double targetDT = 1f / targetFPS;
+            
+            if(deltaT > targetDT) {
+                catchUp += deltaT - targetDT;
+            }
+            
+            int newUpdates = (int) catchUp;
+            catchUp -= newUpdates;
+            if(newUpdates > 0) {
+                deltaT /= newUpdates;
+                while(newUpdates-- > 0)
+                    tick(deltaT);
+            }
+            
             lastFrameTime = System.nanoTime();
             if(frame != null && showFPS)
                 frame.setTitle(String.format("FPS: %.3f   %d" , fps , targetFPS));
-            tick();
+            
             render(image.createGraphics());
             try {
                 strategy.getDrawGraphics().drawImage(image , 0 , 0 , getWidth() , getHeight() , 0 , 0 , SHOW_WIDTH , SHOW_HEIGHT , null);
