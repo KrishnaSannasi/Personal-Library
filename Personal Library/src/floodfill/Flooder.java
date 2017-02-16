@@ -4,12 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
 
 import floodfill.Tile.State;
 
@@ -93,7 +88,6 @@ public final class Flooder {
             throw new RuntimeException("Out of bounds!");
         LinkedList<Point> list = new LinkedList<>();
         list.add(new Point(x , y));
-        int c = 0;
         while(!list.isEmpty()) {
             Point p = list.removeFirst();
             

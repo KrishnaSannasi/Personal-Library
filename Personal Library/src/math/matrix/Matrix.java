@@ -1,7 +1,5 @@
 package math.matrix;
 
-import math.BigDecimal_INF;
-
 public class Matrix extends AbstractMatrix<Double , Matrix> {
     private int rank;
     
