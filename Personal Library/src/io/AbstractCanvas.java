@@ -28,8 +28,8 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
     private double deltaT;
     
     private volatile boolean done;
-    public volatile boolean  showFPS   = false , useWASD = true , useARROW = true;
-    protected volatile int   targetFPS = 20;
+    public volatile boolean  doUpdateKeepUp = true , showFPS = false , useWASD = true , useARROW = true;
+    protected volatile int   targetFPS      = 20;
     protected int            SHOW_WIDTH , SHOW_HEIGHT;
     
     public AbstractCanvas(int width , int height) {
@@ -162,24 +162,27 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
             BufferedImage image = new BufferedImage(getWidth() , getHeight() , BufferedImage.TYPE_INT_ARGB);
             do {
                 thisFrameTime = System.nanoTime();
-                fps = 1000000000. / (thisFrameTime - lastFrameTime);
-            } while(fps > targetFPS && targetFPS != -1);
-            deltaT = 1 / fps;
-            double targetDT = 1f / targetFPS;
-            
-            if(deltaT > targetDT) {
-                catchUp += deltaT - targetDT;
-            }
-            
-            int newUpdates = (int) catchUp;
-            catchUp -= newUpdates;
-            if(newUpdates > 0) {
-                deltaT /= newUpdates;
-                while(newUpdates-- > 0)
-                    tick(deltaT);
-            }
-            
+                fps = 1e9 / (thisFrameTime - lastFrameTime);
+            } while(targetFPS != -1 && fps > targetFPS);
             lastFrameTime = System.nanoTime();
+            deltaT = 1 / fps;
+            
+            if(!doUpdateKeepUp || targetFPS == -1) {
+                tick(deltaT);
+            }
+            else {
+                catchUp += deltaT;
+                
+                int newUpdates = (int) (catchUp * targetFPS);
+                
+                if(newUpdates > 0) {
+                    catchUp -= 1f * newUpdates / targetFPS;
+                    double dt = deltaT / newUpdates;
+                    while(newUpdates-- > 0)
+                        tick(dt);
+                }
+            }
+            
             if(frame != null && showFPS)
                 frame.setTitle(String.format("FPS: %.3f   %d" , fps , targetFPS));
             
