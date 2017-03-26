@@ -3,7 +3,7 @@ package game.damage.fatiuge;
 import game.damage.Damage;
 import game.entity.EntityCharacter;
 
-public class DamageFatigue extends Damage {
+public abstract class DamageFatigue extends Damage {
     private double value;
     
     public DamageFatigue(EntityCharacter victim , double value) {
@@ -16,6 +16,4 @@ public class DamageFatigue extends Damage {
     public double getRawValue() {
         return value;
     }
-    
-    
 }

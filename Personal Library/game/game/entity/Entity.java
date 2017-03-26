@@ -35,7 +35,7 @@ public abstract class Entity {
         return collisionBox;
     }
     
-    public abstract void update();
+    public abstract void update(double deltaT);
     
     public abstract void collide(Entity e);
 }

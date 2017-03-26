@@ -30,16 +30,18 @@ public abstract class Damage {
         
         double mods = 0;
         Damage damage = this;
-        if(this instanceof DamageLatent)
+        if(this instanceof DamageLatent) {
             damage = ((DamageLatent) this).getDamage();
+            if(getRawValue() == -1)
+                return -1;
+        }
         
         Class<? extends Damage> type = damage.getClass();
         
-        for(Resistance resistance: resistances) {
+        for(Resistance resistance: resistances)
             if(resistance.isValidDamageType(type))
                 mods += resistance.getModifier(damage);
-        }
-        
+            
         if(raw < mods)
             return 0;
         else

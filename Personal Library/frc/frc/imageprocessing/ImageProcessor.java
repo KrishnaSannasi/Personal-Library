@@ -319,7 +319,7 @@ public class ImageProcessor {
 			}
 			
 			@Override
-			public void tick() {
+			public void tick(double deltaT) {
 				scalex = (double) getWidth() / imageProcessor.originalImage.getWidth();
 				scaley = (double) getHeight() / imageProcessor.originalImage.getHeight();
 			}

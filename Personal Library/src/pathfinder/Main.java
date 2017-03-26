@@ -43,7 +43,7 @@ public class Main {
             final double           dx = 1d * getWidth() / width , dy = 1d * getHeight() / height;
             
             @Override
-            public void tick() {
+            public void tick(double deltaT) {
             }
             
             @Override
