@@ -95,7 +95,7 @@ public class Vector {
                 hsphere[i] = RAND.nextDouble() * TAU;
             else
                 hsphere[i] = RAND.nextDouble() * Math.PI;
-            
+        System.out.println(hsphere[1]);
         for(int i = 0; i < dim; i++) {
             double p = hsphere[0];
             int j;
