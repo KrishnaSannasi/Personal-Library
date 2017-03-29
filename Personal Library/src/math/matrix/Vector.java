@@ -88,7 +88,7 @@ public class Vector {
         point = new double[dim];
         hsphere = new double[dim];
         
-        //Start with hyperspherical for uniform randomness
+        //Start with n-spherical coordinates for uniform randomness
         hsphere[0] = 1;
         for(int i = 1; i < dim; i++)
             if(i == dim - 1)
