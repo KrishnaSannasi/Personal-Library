@@ -163,6 +163,13 @@ public class Vector {
             return 0;
     }
     
+    public void set(int i , double val) {
+        if(i < point.length)
+            point[i] = val;
+        else
+            throw new IndexOutOfBoundsException();
+    }
+    
     public int getDim() {
         return point.length;
     }
