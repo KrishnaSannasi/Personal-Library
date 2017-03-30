@@ -39,6 +39,10 @@ public class Vector {
         return new Vector(point);
     }
     
+    public static final double getAngle(Vector a , Vector b) {
+        return Math.acos(a.dot(b) / a.mag() / b.mag());
+    }
+    
     private static void getCofactor(double[][] mat , double[][] temp , int p , int q , int n) {
         int i = 0 , j = 0;
         
@@ -82,33 +86,58 @@ public class Vector {
      * Create random unit vector
      */
     public static Vector createRand(final Random RAND , int dim) {
-        final double TAU = Math.PI;
+        final double TAU = 2 * Math.PI;
         
-        double[] point , hsphere;
-        point = new double[dim];
-        hsphere = new double[dim];
+        if(dim < 1)
+            throw new IllegalArgumentException();
         
-        //Start with n-spherical coordinates for uniform randomness
-        hsphere[0] = 1;
-        for(int i = 1; i < dim; i++)
-            if(i == dim - 1)
-                hsphere[i] = RAND.nextDouble() * TAU;
-            else
-                hsphere[i] = RAND.nextDouble() * Math.PI;
-        System.out.println(hsphere[1]);
-        for(int i = 0; i < dim; i++) {
-            double p = hsphere[0];
-            int j;
-            for(j = 1; j <= i; j++) {
-                p *= Math.sin(hsphere[j]);
+        switch (dim) {
+            case 1: {
+                return new Vector(RAND.nextDouble() < .5 ? 1 : -1);
             }
-            if(j < dim) {
-                p *= Math.cos(hsphere[j]);
+            case 2: {
+                double theta = RAND.nextDouble() * TAU;
+                return new Vector(Math.cos(theta) , Math.sin(theta));
             }
-            point[i] = p;
+            case 3: {
+                double theta = RAND.nextDouble() * TAU;
+                double phi = RAND.nextDouble() * Math.PI;
+                return new Vector(Math.cos(theta) * Math.sin(phi) , Math.sin(theta) * Math.sin(phi) , Math.cos(phi));
+            }
+            case 4: {
+                double theta1 = RAND.nextDouble() * TAU;
+                double theta2 = RAND.nextDouble() * TAU;
+                double phi = RAND.nextDouble() * Math.PI;
+                return new Vector(Math.cos(theta1) * Math.sin(phi) , Math.sin(theta1) * Math.sin(phi) , Math.cos(theta2) * Math.cos(phi) , Math.sin(theta2) * Math.cos(phi));
+            }
+            default: {
+                double[] point , hsphere;
+                point = new double[dim];
+                hsphere = new double[dim];
+                
+                //Start with n-spherical coordinates for uniform randomness
+                hsphere[0] = 1;
+                for(int i = 1; i < dim; i++)
+                    if(i == dim - 1)
+                        hsphere[i] = RAND.nextDouble() * TAU;
+                    else
+                        hsphere[i] = RAND.nextDouble() * Math.PI;
+                System.out.println(hsphere[1]);
+                for(int i = 0; i < dim; i++) {
+                    double p = hsphere[0];
+                    int j;
+                    for(j = 1; j <= i; j++) {
+                        p *= Math.sin(hsphere[j]);
+                    }
+                    if(j < dim) {
+                        p *= Math.cos(hsphere[j]);
+                    }
+                    point[i] = p;
+                }
+                
+                return new Vector(point);
+            }
         }
-        
-        return new Vector(point);
     }
     
     private double[] point;
@@ -161,10 +190,7 @@ public class Vector {
     }
     
     public double magSq() {
-        double magsq = 0;
-        for(int i = 0; i < point.length; i++)
-            magsq += point[i] * point[i];
-        return magsq;
+        return dot(this);
     }
     
     public double mag() {
