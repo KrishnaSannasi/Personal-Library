@@ -162,10 +162,10 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
             BufferedImage image = new BufferedImage(getWidth() , getHeight() , BufferedImage.TYPE_INT_ARGB);
             do {
                 thisFrameTime = System.nanoTime();
-                fps = 1e9 / (thisFrameTime - lastFrameTime);
+                deltaT = (thisFrameTime - lastFrameTime) / 1e9;
+                fps = 1 / deltaT;
             } while(targetFPS != -1 && fps > targetFPS);
             lastFrameTime = System.nanoTime();
-            deltaT = 1 / fps;
             
             if(!doUpdateKeepUp || targetFPS == -1) {
                 tick(deltaT);
