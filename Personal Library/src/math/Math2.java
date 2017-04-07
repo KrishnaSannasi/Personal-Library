@@ -3,7 +3,8 @@ package math;
 import math.matrix.Vector;
 
 public final class Math2 {
-    public static final double TAU = 2 * Math.PI;
+    private static final double STD_CURVE_COEFF[] = {0.0000014232966572456734266807 , 0.79845014549212401191185 , -0.0070208686008880734030572 , -0.10550649458477175765778 , -0.050170092689955576171875 , 0.069361597650519055175781 , -0.027250505403858675286851 , 0.00533072557369898852571 , -0.00053348158351417130394325 , 0.00002185752235202593136528};
+    public static final double  TAU     = 2 * Math.PI;
     
     public static final double min(double... ds) {
         if(ds.length == 0)
@@ -58,6 +59,28 @@ public final class Math2 {
                 out[i] = t * (out[i + 1] - out[i]) + out[i];
             
         return out[0];
+    }
+    
+    public static final double stdCurve(double x0 , double x1) {
+        return stdCurve(x1) - stdCurve(x0);
+    }
+    
+    public static final double stdCurve(double x) {
+        if(x < -5)
+            return 0;
+        if(x < 0)
+            return 1 - stdCurve(-x);
+        if(x > 5)
+            return 1;
+        if(x == 0)
+            return .5;
+        
+        double val = 0 , x1 = 1 / x;
+        
+        for(int i = 0; i < STD_CURVE_COEFF.length; i++)
+            val += STD_CURVE_COEFF[i] * (x1 *= x);
+        
+        return (val + 1) / 2;
     }
     
     public static final Vector bezier(double t , Vector... x) {
