@@ -237,6 +237,20 @@ public class Vector {
         return true;
     }
     
+    /**
+     * Project onto Vector v <br>
+     * proj_v(this)
+     */
+    public Vector proj(Vector v) {
+        Vector proj = new Vector(v);
+        proj.setMag(dot(v) / v.dot(v));
+        return proj;
+    }
+    
+    public double getAngle(Vector v) { 
+        return Math.acos(dot(v) / mag() / v.mag());
+    }
+    
     @Override
     public Object clone() {
         return new Vector(this);
