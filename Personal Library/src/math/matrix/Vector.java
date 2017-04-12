@@ -243,7 +243,7 @@ public class Vector {
      */
     public Vector proj(Vector v) {
         Vector proj = new Vector(v);
-        proj.setMag(dot(v) / v.dot(v));
+        proj.mult(dot(v) / v.dot(v));
         return proj;
     }
     
