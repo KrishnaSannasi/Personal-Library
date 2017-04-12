@@ -26,25 +26,25 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     }
     
     private int findRank() {
-        if(isSquare() && det() != 0)
-            return rank = numOfRow;
-        else if(isSquare() && numOfRow == 1)
-            return rank = 0;
-        else {
-            int size = Math.min(numOfCol , numOfRow - 1);
-            rank = sub(0 , 0 , size , size).rank;
-            
-            if(rank == 0) {
-                for(int i = 0; i < numOfRow; i++) {
-                    for(int j = 0; j < numOfCol; j++)
-                        if(get(i , j) != 0) {
-                            rank = 1;
-                        }
-                }
+        if(isSquare())
+            if(det() != 0)
+                return rank = numOfRow;
+            else if(numOfRow == 1)
+                return rank = 0;
+        
+        int size = Math.min(numOfCol , numOfRow - 1);
+        rank = sub(0 , 0 , size , size).rank;
+        
+        if(rank == 0) {
+            for(int i = 0; i < numOfRow; i++) {
+                for(int j = 0; j < numOfCol; j++)
+                    if(get(i , j) != 0) {
+                        rank = 1;
+                    }
             }
-            
-            return rank;
         }
+        
+        return rank;
     }
     
     public Matrix sub(int ix , int iy , int nor , int noc) {
