@@ -7,8 +7,8 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
         this(matrix , false);
     }
     
-    public Matrix(int width , int height) {
-        this(new Double[width][height] , false , false);
+    public Matrix(int numOfRow , int numOfCol) {
+        this(new Double[numOfRow][numOfCol] , false , false);
     }
     
     public Matrix(Double[][] matrix , boolean isImmutable) {
@@ -31,7 +31,7 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
                 return rank = numOfRow;
             else if(numOfRow == 1)
                 return rank = 0;
-        
+            
         int size = Math.min(numOfCol , numOfRow - 1);
         rank = sub(0 , 0 , size , size).rank;
         
@@ -112,11 +112,11 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
         
         Double[][] product = new Double[numOfRow][matrix.numOfCol];
         
-        for(int i = 0; i < numOfRow; i++) {
-            for(int j = 0; j < matrix.numOfCol; j++) {
-                product[i][j] = 0d;
+        for(int r = 0; r < numOfRow; r++) {
+            for(int c = 0; c < matrix.numOfCol; c++) {
+                product[r][c] = 0d;
                 for(int ii = 0; ii < numOfCol; ii++) {
-                    product[i][j] += get(i , ii) * matrix.get(ii , j);
+                    product[r][c] += get(r , ii) * matrix.get(ii , c);
                 }
             }
         }
@@ -174,9 +174,9 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     public Matrix transpose() {
         Double[][] matrix = new Double[numOfRow][numOfCol];
         
-        for(int i = 0; i < numOfCol; i++) {
-            for(int j = 0; j < numOfRow; j++) {
-                matrix[j][i] = get(i , j);
+        for(int c = 0; c < numOfCol; c++) {
+            for(int r = 0; r < numOfRow; r++) {
+                matrix[r][c] = get(c , r);
             }
         }
         
@@ -185,12 +185,12 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     
     @Override
     public Matrix adj(int row , int col) {
-        Double[][] matrix = new Double[numOfCol - 1][numOfRow - 1];
+        Double[][] matrix = new Double[numOfRow - 1][numOfCol - 1];
         
-        for(int i = 0; i < numOfCol; i++) {
-            for(int j = 0; j < numOfRow; j++) {
-                if(i != row && j != col)
-                    matrix[i - (i > row ? 1 : 0)][j - (j > col ? 1 : 0)] = get(i , j);
+        for(int c = 0; c < numOfCol; c++) {
+            for(int r = 0; r < numOfRow; r++) {
+                if(c != row && r != col)
+                    matrix[r - (r > col ? 1 : 0)][c - (c > row ? 1 : 0)] = get(r , c);
             }
         }
         
@@ -199,12 +199,12 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     
     @Override
     public Matrix adj() {
-        Double[][] adj = new Double[numOfCol][numOfRow];
+        Double[][] adj = new Double[numOfRow][numOfCol];
         Matrix m = this.transpose();
         
-        for(int i = 0; i < numOfCol; i++) {
-            for(int j = 0; j < numOfRow; j++) {
-                adj[i][j] = Math.pow(-1 , i + j) * m.adj(i , j).det();
+        for(int c = 0; c < numOfCol; c++) {
+            for(int r = 0; r < numOfRow; r++) {
+                adj[r][c] = Math.pow(-1 , c + r) * m.adj(r , c).det();
             }
         }
         
@@ -263,6 +263,60 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
         }
         
         return m;
+    }
+    
+    /**
+     * Algorithm:<br>
+     * <a href=
+     * "https://en.wikipedia.org/wiki/QR_decomposition#Computing_the_QR_decomposition">Computing
+     * QR Decomposition</a>
+     * 
+     */
+    public Matrix[] getQR() {
+        if(isSquare()) {
+            Double[][] Q = new Double[numOfRow][numOfCol] , R = new Double[numOfRow][numOfCol];
+            Vector[] e = new Vector[numOfCol] , a = new Vector[numOfRow];
+            
+            // Find u vectors
+            for(int c = 0; c < numOfCol; c++) {
+                e[c] = new Vector(new double[numOfRow]);
+                a[c] = new Vector(new double[numOfRow]);
+                
+                for(int r = 0; r < numOfRow; r++) {
+                    double val = get(r , c);
+                    e[c].set(r , val);
+                    a[c].set(r , val);
+                }
+                
+                for(int j = 0; j < c; j++) {
+                    Vector proj = a[c].proj(e[j]);
+                    proj.mult(-1);
+                    e[c].add(proj);
+                }
+            }
+            
+            // Make e all unit vectors
+            for(int c = 0; c < numOfCol; c++)
+                for(int r = 0; r < numOfRow; r++)
+                    e[c].setMag(1);
+                
+            for(int c = 0; c < numOfCol; c++) {
+                for(int r = 0; r < numOfRow; r++) {
+                    Q[r][c] = e[c].get(r);
+                    if(c >= r) {
+                        System.out.println(r + " " + c);
+                        R[r][c] = e[r].dot(a[c]);
+                    }
+                    else
+                        R[r][c] = 0d;
+                }
+            }
+            
+            return new Matrix[] {new Matrix(Q) , new Matrix(R)};
+        }
+        else {
+            return null;
+        }
     }
     
     @Override
