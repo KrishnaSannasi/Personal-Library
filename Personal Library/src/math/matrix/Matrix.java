@@ -44,10 +44,10 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
         if(matrix.numOfCol != numOfCol || matrix.numOfRow != numOfRow)
             throw new IllegalArgumentException();
         
-        Double[][] sum = new Double[numOfCol][numOfRow];
+        Double[][] sum = new Double[numOfRow][numOfCol];
         
-        for(int i = 0; i < numOfCol; i++) {
-            for(int j = 0; j < numOfRow; j++) {
+        for(int i = 0; i < numOfRow; i++) {
+            for(int j = 0; j < numOfCol; j++) {
                 sum[i][j] = get(i , j) + matrix.get(i , j);
             }
         }
@@ -60,10 +60,10 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
         if(matrix.numOfCol != numOfCol || matrix.numOfRow != numOfRow)
             throw new IllegalArgumentException();
         
-        Double[][] sum = new Double[numOfCol][numOfRow];
+        Double[][] sum = new Double[numOfRow][numOfCol];
         
-        for(int i = 0; i < numOfCol; i++) {
-            for(int j = 0; j < numOfRow; j++) {
+        for(int i = 0; i < numOfRow; i++) {
+            for(int j = 0; j < numOfCol; j++) {
                 sum[i][j] = get(i , j) - matrix.get(i , j);
             }
         }
@@ -73,10 +73,10 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     
     @Override
     public Matrix multiply(Double scalar) {
-        Double[][] product = new Double[numOfCol][numOfRow];
+        Double[][] product = new Double[numOfRow][numOfCol];
         
-        for(int i = 0; i < numOfCol; i++) {
-            for(int j = 0; j < numOfRow; j++) {
+        for(int i = 0; i < numOfRow; i++) {
+            for(int j = 0; j < numOfCol; j++) {
                 product[i][j] = scalar * get(i , j);
             }
         }
