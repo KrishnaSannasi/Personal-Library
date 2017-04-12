@@ -26,37 +26,17 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     }
     
     private int findRank() {
-        if(isSquare())
-            if(det() != 0)
-                return rank = numOfRow;
-            else if(numOfRow == 1)
-                return rank = 0;
-            
-        int size = Math.min(numOfCol , numOfRow - 1);
-        rank = sub(0 , 0 , size , size).rank;
-        
-        if(rank == 0) {
-            for(int i = 0; i < numOfRow; i++) {
-                for(int j = 0; j < numOfCol; j++)
-                    if(get(i , j) != 0) {
-                        rank = 1;
-                    }
-            }
-        }
-        
-        return rank;
+        return rank = rref().rank;
     }
     
     public Matrix sub(int ix , int iy , int nor , int noc) {
-        Matrix m = new Matrix(nor , noc);
+        Double[][] m = new Double[nor][noc];
         for(int x = 0; x < nor; x++) {
             for(int y = 0; y < nor; y++) {
-                m.set(x , y , get(ix + x , iy + y));
+                m[x][y] = get(ix + x , iy + y);
             }
         }
-        m.findRank();
-        m.setImmutable();
-        return m;
+        return new Matrix(m , true , true);
     }
     
     @Override
@@ -172,11 +152,11 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     
     @Override
     public Matrix transpose() {
-        Double[][] matrix = new Double[numOfRow][numOfCol];
+        Double[][] matrix = new Double[numOfCol][numOfRow];
         
         for(int c = 0; c < numOfCol; c++) {
             for(int r = 0; r < numOfRow; r++) {
-                matrix[r][c] = get(c , r);
+                matrix[c][r] = get(r , c);
             }
         }
         
@@ -217,52 +197,65 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     }
     
     public Matrix rref() {
-        Matrix m = new Matrix(numOfRow , numOfCol);
+        Double[][] m = new Double[numOfRow][numOfCol];
         
         //Make columns cumulative
         for(int i = numOfRow - 1; i >= 0; i--) {
             for(int j = 0; j < numOfCol; j++) {
                 double n = get(i , j);
                 if(i < numOfRow - 1) {
-                    n = m.get(i + 1 , j) + n;
+                    n = m[i + 1][j] + n;
                 }
-                m.set(i , j , n);
+                m[i][j] = n;
             }
         }
         
         //Go down matrix
         double pivotValue;
         
-        for(int i = 0; i < numOfRow - 1; i++) {
-            if((pivotValue = m.get(i , i)) == 0)
+        for(int i = 0; i < Math.min(numOfRow - 1 , numOfCol); i++) {
+            if((pivotValue = m[i][i]) == 0)
                 continue;
             for(int j = i + 1; j < numOfRow; j++) {
-                double c = -m.get(j , i) / pivotValue;
+                double c = -m[j][i] / pivotValue;
                 for(int k = 0; k < numOfCol; k++)
-                    m.set(j , k , m.get(i , k) * c + m.get(j , k));
+                    m[j][k] = m[i][k] * c + m[j][k];
             }
         }
         
         //Set diagonal to one
-        for(int i = 0; i < numOfRow; i++) {
-            double diag = m.get(i , i);
+        for(int i = 0; i < Math.min(numOfRow , numOfCol); i++) {
+            double diag = m[i][i];
             if(diag == 0)
                 continue;
             for(int j = 0; j < numOfCol; j++)
-                m.set(i , j , m.get(i , j) / diag);
+                m[i][j] = m[i][j] / diag;
         }
         
         //Go up matrix
         double[] row = new double[numOfCol];
         for(int i = numOfRow - 2; i >= 0; i--) {
             for(int j = 0; j < numOfCol; j++)
-                row[j] = m.get(i , j);
+                row[j] = m[i][j];
             for(int j = 0; j < numOfCol; j++)
                 for(int k = 1; i + k < numOfRow; k++)
-                    m.set(i , j , m.get(i , j) - m.get(i + k , j) * row[i + k]);
+                    if(i + k < numOfCol)
+                        m[i][j] = m[i][j] - m[i + k][j] * row[i + k];
         }
         
-        return m;
+        Matrix matrix = new Matrix(m , true , false);
+        matrix.rank = 0;
+        
+        for(int i = 0; i < numOfRow; i++) {
+            for(int j = 0; j < numOfCol; j++) {
+                if(m[i][j] != 0) {
+                    matrix.rank++;
+                    break;
+                }
+            }
+        }
+        
+        return matrix;
     }
     
     /**
