@@ -21,6 +21,10 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
             findRank();
     }
     
+    public Matrix(Matrix transfer) {
+        super(transfer);
+    }
+    
     public int getRank() {
         return rank;
     }
@@ -349,7 +353,11 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
         private static Double[][] create(int size) {
             Double[][] matrix = new Double[size][size];
             for(int i = 0; i < size; i++)
-                matrix[i][i] = 1.;
+                for(int j = 0; j < size; j++)
+                    if(i == j)
+                        matrix[i][j] = 1d;
+                    else
+                        matrix[i][j] = 0d;
             return matrix;
         }
     }
