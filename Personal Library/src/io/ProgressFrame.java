@@ -65,6 +65,10 @@ public class ProgressFrame {
         return (useGradient ? 75 : 30) > dist;
     }
     
+    public static void increment(int i) {
+        update(progressBar.getValue() + i);
+    }
+    
     public static void update(int i) {
         if(i >= progressBar.getMinimum() && i <= progressBar.getMaximum()) {
             int diff = progressBar.getMaximum() - progressBar.getMinimum();
