@@ -174,7 +174,7 @@ public class Vector {
         return point.length;
     }
     
-    public void add(Vector v) {
+    public Vector add(Vector v) {
         if(v.point.length == point.length) {
             for(int i = 0; i < point.length; i++)
                 point[i] += v.point[i];
@@ -182,11 +182,13 @@ public class Vector {
         else {
             throw new IndexOutOfBoundsException();
         }
+        return this;
     }
     
-    public void mult(double d) {
+    public Vector mult(double d) {
         for(int i = 0; i < point.length; i++)
             point[i] *= d;
+        return this;
     }
     
     public double dot(Vector v) {
@@ -247,7 +249,7 @@ public class Vector {
         return proj;
     }
     
-    public double getAngle(Vector v) { 
+    public double getAngle(Vector v) {
         return Math.acos(dot(v) / mag() / v.mag());
     }
     
