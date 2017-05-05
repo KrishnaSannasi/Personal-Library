@@ -28,14 +28,14 @@ or implied, of James Humphreys.
 
 package voronoi;
 
-// used both for sites and for vertices
-public class Site
-{
-    Point coord;
-    int sitenbr;
+import math.matrix.Vector;
 
-    public Site()
-    {
-        coord = new Point();
+// used both for sites and for vertices
+public class Site {
+    Vector coord;
+    int    sitenbr;
+    
+    public Site() {
+        coord = new Vector(0 , 0);
     }
 }

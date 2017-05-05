@@ -32,15 +32,13 @@ package voronoi;
  *
  * @author James Humphreys
  */
-class VornoiEdge
-{
-    public double a = 0, b = 0, c = 0;
-    Site[] ep;  // JH: End points?
-    Site[] reg; // JH: Sites this edge bisects?
-    int edgenbr;
-
-    VornoiEdge()
-    {
+class VornoiEdge {
+    public double a = 0 , b = 0 , c = 0;
+    Site[]        ep;                   // JH: End points?
+    Site[]        reg;                  // JH: Sites this edge bisects?
+    int           edgenbr;
+    
+    VornoiEdge() {
         ep = new Site[2];
         reg = new Site[2];
     }

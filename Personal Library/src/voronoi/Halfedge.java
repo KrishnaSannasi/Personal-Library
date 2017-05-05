@@ -28,18 +28,16 @@ or implied, of James Humphreys.
 
 package voronoi;
 
-public class Halfedge
-{
-    Halfedge ELleft, ELright;
+public class Halfedge {
+    Halfedge   ELleft , ELright;
     VornoiEdge ELedge;
-    boolean deleted;
-    int ELpm;
-    Site vertex;
-    double ystar;
-    Halfedge PQnext;
-
-    public Halfedge()
-    {
+    boolean    deleted;
+    int        ELpm;
+    Site       vertex;
+    double     ystar;
+    Halfedge   PQnext;
+    
+    public Halfedge() {
         PQnext = null;
     }
 }

@@ -48,6 +48,8 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import math.matrix.Vector;
+
 public class Voronoi {
     // ************* Private members ******************
     private double   borderMinX , borderMaxX , borderMinY , borderMaxY;
@@ -162,17 +164,17 @@ public class Voronoi {
         Collections.sort(listSites , new Comparator<Site>() {
             @Override
             public final int compare(Site p1 , Site p2) {
-                Point s1 = p1.coord , s2 = p2.coord;
-                if(s1.y < s2.y) {
+                Vector s1 = p1.coord , s2 = p2.coord;
+                if(s1.value[1] < s2.value[1]) {
                     return (-1);
                 }
-                if(s1.y > s2.y) {
+                if(s1.value[1] > s2.value[1]) {
                     return (1);
                 }
-                if(s1.x < s2.x) {
+                if(s1.value[0] < s2.value[0]) {
                     return (-1);
                 }
-                if(s1.x > s2.x) {
+                if(s1.value[0] > s2.value[0]) {
                     return (1);
                 }
                 return (0);
@@ -195,7 +197,8 @@ public class Voronoi {
         ymax = yValues[0];
         for(i = 0; i < nsites; i++) {
             sites[i] = new Site();
-            sites[i].coord.setPoint(xValues[i] , yValues[i]);
+            sites[i].coord.value[0] = xValues[i];
+            sites[i].coord.value[1] = yValues[i];
             sites[i].sitenbr = i;
             
             if(xValues[i] < xmin) {
@@ -245,12 +248,12 @@ public class Voronoi {
         newedge.ep[1] = null;
         
         // get the difference in x dist between the sites
-        dx = s2.coord.x - s1.coord.x;
-        dy = s2.coord.y - s1.coord.y;
+        dx = s2.coord.value[0] - s1.coord.value[0];
+        dy = s2.coord.value[1] - s1.coord.value[1];
         // make sure that the difference in positive
         adx = dx > 0 ? dx : -dx;
         ady = dy > 0 ? dy : -dy;
-        newedge.c = (double) (s1.coord.x * dx + s1.coord.y * dy + (dx * dx + dy * dy) * 0.5);// get the slope of the line
+        newedge.c = (double) (s1.coord.value[0] * dx + s1.coord.value[1] * dy + (dx * dx + dy * dy) * 0.5);// get the slope of the line
         
         if(adx > ady) {
             newedge.a = 1.0f;
@@ -307,9 +310,9 @@ public class Voronoi {
         Halfedge last , next;
         
         he.vertex = v;
-        he.ystar = (double) (v.coord.y + offset);
+        he.ystar = (double) (v.coord.value[1] + offset);
         last = PQhash[PQbucket(he)];
-        while((next = last.PQnext) != null && (he.ystar > next.ystar || (he.ystar == next.ystar && v.coord.x > next.vertex.coord.x))) {
+        while((next = last.PQnext) != null && (he.ystar > next.ystar || (he.ystar == next.ystar && v.coord.value[0] > next.vertex.coord.value[0]))) {
             last = next;
         }
         he.PQnext = last.PQnext;
@@ -337,14 +340,14 @@ public class Voronoi {
         return (PQcount == 0);
     }
     
-    private Point PQ_min() {
-        Point answer = new Point();
+    private Vector PQ_min() {
+        Vector answer = new Vector();
         
         while(PQhash[PQmin].PQnext == null) {
             PQmin += 1;
         }
-        answer.x = PQhash[PQmin].PQnext.vertex.coord.x;
-        answer.y = PQhash[PQmin].PQnext.ystar;
+        answer.value[0] = PQhash[PQmin].PQnext.vertex.coord.value[0];
+        answer.value[1] = PQhash[PQmin].PQnext.ystar;
         return (answer);
     }
     
@@ -436,14 +439,14 @@ public class Voronoi {
         return (null);
     }
     
-    private Halfedge ELleftbnd(Point p) {
+    private Halfedge ELleftbnd(Vector p) {
         int i , bucket;
         Halfedge he;
         
         /* Use hash table to get close to desired halfedge */
         // use the hash function to find the place in the hash map that this
         // HalfEdge should be
-        bucket = (int) ((p.x - xmin) / deltax * ELhashsize);
+        bucket = (int) ((p.value[0] - xmin) / deltax * ELhashsize);
         
         // make sure that the bucket position in within the range of the hash
         // array
@@ -471,14 +474,14 @@ public class Voronoi {
         /* Now search linear list of halfedges for the correct one */
         if(he == ELleftend || (he != ELrightend && right_of(he , p))) {
             // keep going right on the list until either the end is reached, or
-            // you find the 1st edge which the point isn't to the right of
+            // you find the 1st edge which the Vector isn't to the right of
             do {
                 he = he.ELright;
             } while(he != ELrightend && right_of(he , p));
             he = he.ELleft;
         }
         else
-        // if the point is to the left of the HalfEdge, then search left for
+        // if the Vector is to the left of the HalfEdge, then search left for
         // the HE just to the left of the point
         {
             do {
@@ -510,10 +513,10 @@ public class Voronoi {
         Site s1 , s2;
         double x1 = 0 , x2 = 0 , y1 = 0 , y2 = 0;
         
-        x1 = e.reg[0].coord.x;
-        x2 = e.reg[1].coord.x;
-        y1 = e.reg[0].coord.y;
-        y2 = e.reg[1].coord.y;
+        x1 = e.reg[0].coord.value[0];
+        x2 = e.reg[1].coord.value[0];
+        y1 = e.reg[0].coord.value[1];
+        y2 = e.reg[1].coord.value[1];
         
         // if the distance between the two points this line was created from is
         // less than the square root of 2, then ignore it
@@ -536,16 +539,16 @@ public class Voronoi {
         
         if(e.a == 1.0) {
             y1 = pymin;
-            if(s1 != null && s1.coord.y > pymin) {
-                y1 = s1.coord.y;
+            if(s1 != null && s1.coord.value[1] > pymin) {
+                y1 = s1.coord.value[1];
             }
             if(y1 > pymax) {
                 y1 = pymax;
             }
             x1 = e.c - e.b * y1;
             y2 = pymax;
-            if(s2 != null && s2.coord.y < pymax) {
-                y2 = s2.coord.y;
+            if(s2 != null && s2.coord.value[1] < pymax) {
+                y2 = s2.coord.value[1];
             }
             
             if(y2 < pymin) {
@@ -574,16 +577,16 @@ public class Voronoi {
         }
         else {
             x1 = pxmin;
-            if(s1 != null && s1.coord.x > pxmin) {
-                x1 = s1.coord.x;
+            if(s1 != null && s1.coord.value[0] > pxmin) {
+                x1 = s1.coord.value[0];
             }
             if(x1 > pxmax) {
                 x1 = pxmax;
             }
             y1 = e.c - e.a * x1;
             x2 = pxmax;
-            if(s2 != null && s2.coord.x < pxmax) {
-                x2 = s2.coord.x;
+            if(s2 != null && s2.coord.value[0] < pxmax) {
+                x2 = s2.coord.value[0];
             }
             if(x2 < pxmin) {
                 x2 = pxmin;
@@ -622,7 +625,7 @@ public class Voronoi {
     }
     
     /* returns 1 if p is to right of halfedge e */
-    private boolean right_of(Halfedge el , Point p) {
+    private boolean right_of(Halfedge el , Vector p) {
         VornoiEdge e;
         Site topsite;
         boolean right_of_site;
@@ -631,7 +634,7 @@ public class Voronoi {
         
         e = el.ELedge;
         topsite = e.reg[1];
-        if(p.x > topsite.coord.x) {
+        if(p.value[0] > topsite.coord.value[0]) {
             right_of_site = true;
         }
         else {
@@ -645,15 +648,15 @@ public class Voronoi {
         }
         
         if(e.a == 1.0) {
-            dyp = p.y - topsite.coord.y;
-            dxp = p.x - topsite.coord.x;
+            dyp = p.value[1] - topsite.coord.value[1];
+            dxp = p.value[0] - topsite.coord.value[0];
             fast = false;
             if((!right_of_site & (e.b < 0.0)) | (right_of_site & (e.b >= 0.0))) {
                 above = dyp >= e.b * dxp;
                 fast = above;
             }
             else {
-                above = p.x + p.y * e.b > e.c;
+                above = p.value[0] + p.value[1] * e.b > e.c;
                 if(e.b < 0.0) {
                     above = !above;
                 }
@@ -662,7 +665,7 @@ public class Voronoi {
                 }
             }
             if(!fast) {
-                dxs = topsite.coord.x - (e.reg[0]).coord.x;
+                dxs = topsite.coord.value[0] - (e.reg[0]).coord.value[0];
                 above = e.b * (dxp * dxp - dyp * dyp) < dxs * dyp * (1.0 + 2.0 * dxp / dxs + e.b * e.b);
                 if(e.b < 0.0) {
                     above = !above;
@@ -672,10 +675,10 @@ public class Voronoi {
         else /* e.b==1.0 */
         
         {
-            yl = e.c - e.a * p.x;
-            t1 = p.y - yl;
-            t2 = p.x - topsite.coord.x;
-            t3 = yl - topsite.coord.y;
+            yl = e.c - e.a * p.value[0];
+            t1 = p.value[1] - yl;
+            t2 = p.value[0] - topsite.coord.value[0];
+            t3 = yl - topsite.coord.value[1];
             above = t1 * t1 > t2 * t2 + t3 * t3;
         }
         return (el.ELpm == LE ? above : !above);
@@ -696,13 +699,13 @@ public class Voronoi {
     
     private double dist(Site s , Site t) {
         double dx , dy;
-        dx = s.coord.x - t.coord.x;
-        dy = s.coord.y - t.coord.y;
+        dx = s.coord.value[0] - t.coord.value[0];
+        dy = s.coord.value[1] - t.coord.value[1];
         return (double) (Math.sqrt(dx * dx + dy * dy));
     }
     
     // create a new site where the HalfEdges el1 and el2 intersect - note that
-    // the Point in the argument list is not used, don't know why it's there
+    // the Vector in the argument list is not used, don't know why it's there
     private Site intersect(Halfedge el1 , Halfedge el2) {
         VornoiEdge e1 , e2 , e;
         Halfedge el;
@@ -729,7 +732,7 @@ public class Voronoi {
         xint = (e1.c * e2.b - e2.c * e1.b) / d;
         yint = (e2.c * e1.a - e1.c * e2.a) / d;
         
-        if((e1.reg[1].coord.y < e2.reg[1].coord.y) || (e1.reg[1].coord.y == e2.reg[1].coord.y && e1.reg[1].coord.x < e2.reg[1].coord.x)) {
+        if((e1.reg[1].coord.value[1] < e2.reg[1].coord.value[1]) || (e1.reg[1].coord.value[1] == e2.reg[1].coord.value[1] && e1.reg[1].coord.value[0] < e2.reg[1].coord.value[0])) {
             el = el1;
             e = e1;
         }
@@ -738,16 +741,16 @@ public class Voronoi {
             e = e2;
         }
         
-        right_of_site = xint >= e.reg[1].coord.x;
+        right_of_site = xint >= e.reg[1].coord.value[0];
         if((right_of_site && el.ELpm == LE) || (!right_of_site && el.ELpm == RE)) {
             return null;
         }
         
-        // create a new site at the point of intersection - this is a new vector
+        // create a new site at the Vector of intersection - this is a new vector
         // event waiting to happen
         v = new Site();
-        v.coord.x = xint;
-        v.coord.y = yint;
+        v.coord.value[0] = xint;
+        v.coord.value[1] = yint;
         return (v);
     }
     
@@ -759,7 +762,7 @@ public class Voronoi {
     private boolean voronoi_bd() {
         Site newsite , bot , top , temp , p;
         Site v;
-        Point newintstar = null;
+        Vector newintstar = null;
         int pm;
         Halfedge lbnd , rbnd , llbnd , rrbnd , bisector;
         VornoiEdge e;
@@ -777,7 +780,7 @@ public class Voronoi {
             // intersection,
             // process the site otherwise process the vector intersection
             
-            if(newsite != null && (PQempty() || newsite.coord.y < newintstar.y || (newsite.coord.y == newintstar.y && newsite.coord.x < newintstar.x))) {
+            if(newsite != null && (PQempty() || newsite.coord.value[1] < newintstar.value[1] || (newsite.coord.value[1] == newintstar.value[1] && newsite.coord.value[0] < newintstar.value[0]))) {
                 /* new site is smallest -this is a site event */
                 // get the first HalfEdge to the LEFT of the new site
                 lbnd = ELleftbnd((newsite.coord));
@@ -837,10 +840,10 @@ public class Voronoi {
                 makevertex(v); // set the vertex number - couldn't do this
                 // earlier since we didn't know when it would be processed
                 endpoint(lbnd.ELedge , lbnd.ELpm , v);
-                // set the endpoint of
+                // set the endVector of
                 // the left HalfEdge to be this vector
                 endpoint(rbnd.ELedge , rbnd.ELpm , v);
-                // set the endpoint of the right HalfEdge to
+                // set the endVector of the right HalfEdge to
                 // be this vector
                 ELdelete(lbnd); // mark the lowest HE for
                 // deletion - can't delete yet because there might be pointers
@@ -852,7 +855,7 @@ public class Voronoi {
                 // to it in Hash Map
                 pm = LE; // set the pm variable to zero
                 
-                if(bot.coord.y > top.coord.y)
+                if(bot.coord.value[1] > top.coord.value[1])
                 // if the site to the left of the event is higher than the
                 // Site
                 { // to the right of it, then swap them and set the 'pm'
@@ -866,12 +869,12 @@ public class Voronoi {
                 // that is between the two Sites. This creates the formula of
                 // the line, and assigns a line number to it
                 bisector = HEcreate(e , pm); // create a HE from the Edge 'e',
-                // and make it point to that edge
+                // and make it Vector to that edge
                 // with its ELedge field
                 ELinsert(llbnd , bisector); // insert the new bisector to the
                 // right of the left HE
-                endpoint(e , RE - pm , v); // set one endpoint to the new edge
-                // to be the vector point 'v'.
+                endpoint(e , RE - pm , v); // set one end Vector to the new edge
+                // to be the vector Vector 'v'.
                 // If the site to the left of this bisector is higher than the
                 // right Site, then this endpoint
                 // is put in position 0; otherwise in pos 1
