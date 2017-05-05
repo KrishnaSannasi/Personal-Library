@@ -11,7 +11,7 @@ public class Vector {
             throw new IndexOutOfBoundsException();
         double[] point = new double[vs.length + 1];
         for(Vector v: vs) {
-            if(v.point.length != point.length)
+            if(v.value.length != point.length)
                 throw new IndexOutOfBoundsException();
         }
         
@@ -29,7 +29,7 @@ public class Vector {
                 mj = 0;
                 for(int k = 0; k < point.length; k++) {
                     if(i != k)
-                        mat[j][mj++] = vs[j].point[k];
+                        mat[j][mj++] = vs[j].value[k];
                 }
             }
             point[i] = sign * det(mat , temps , mat.length);
@@ -140,44 +140,46 @@ public class Vector {
         }
     }
     
-    private double[] point;
+    public final double[] value;
     
     public Vector() {
         this(0 , 0 , 0);
     }
     
-    public Vector(double... point) {
-        this.point = point;
+    public Vector(double... value) {
+        this.value = value;
     }
     
     public Vector(Vector v) {
-        this.point = new double[v.point.length];
-        for(int i = 0; i < point.length; i++)
-            point[i] = v.point[i];
+        this.value = new double[v.value.length];
+        for(int i = 0; i < value.length; i++)
+            value[i] = v.value[i];
     }
     
+    @Deprecated
     public double get(int i) {
-        if(i < point.length)
-            return point[i];
+        if(i < value.length)
+            return value[i];
         else
             return 0;
     }
-    
+
+    @Deprecated
     public void set(int i , double val) {
-        if(i < point.length)
-            point[i] = val;
+        if(i < value.length)
+            value[i] = val;
         else
             throw new IndexOutOfBoundsException();
     }
     
     public int getDim() {
-        return point.length;
+        return value.length;
     }
     
     public Vector add(Vector v) {
-        if(v.point.length == point.length) {
-            for(int i = 0; i < point.length; i++)
-                point[i] += v.point[i];
+        if(v.value.length == value.length) {
+            for(int i = 0; i < value.length; i++)
+                value[i] += v.value[i];
         }
         else {
             throw new IndexOutOfBoundsException();
@@ -186,15 +188,15 @@ public class Vector {
     }
     
     public Vector mult(double d) {
-        for(int i = 0; i < point.length; i++)
-            point[i] *= d;
+        for(int i = 0; i < value.length; i++)
+            value[i] *= d;
         return this;
     }
     
     public double dot(Vector v) {
         double dot = 0;
-        for(int i = Math.min(point.length , v.point.length) - 1; i >= 0; i--)
-            dot += point[i] * v.point[i];
+        for(int i = Math.min(value.length , v.value.length) - 1; i >= 0; i--)
+            dot += value[i] * v.value[i];
         return dot;
     }
     
@@ -218,21 +220,21 @@ public class Vector {
         else
             return false;
         
-        int min = Math.min(point.length , v.point.length);
-        int max = Math.max(point.length , v.point.length);
+        int min = Math.min(value.length , v.value.length);
+        int max = Math.max(value.length , v.value.length);
         
         for(int i = 0; i < min; i++)
-            if(point[i] != v.point[i])
+            if(value[i] != v.value[i])
                 return false;
             
-        if(max > point.length) {
+        if(max > value.length) {
             for(int i = min; i < max; i++)
-                if(v.point[i] != 0)
+                if(v.value[i] != 0)
                     return false;
         }
         else {
             for(int i = min; i < max; i++)
-                if(point[i] != 0)
+                if(value[i] != 0)
                     return false;
         }
         
@@ -260,6 +262,6 @@ public class Vector {
     
     @Override
     public String toString() {
-        return Arrays.toString(point).replace('[' , '<').replace(']' , '>');
+        return Arrays.toString(value).replace('[' , '<').replace(']' , '>');
     }
 }
