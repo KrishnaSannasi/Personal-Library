@@ -15,8 +15,8 @@ public class VoronoiUtils {
             points[1][i] = 0;
             
             for(Vector p: poly[i]) {
-                points[0][i] += p.get(0);
-                points[1][i] += p.get(1);
+                points[0][i] += p.value[0];
+                points[1][i] += p.value[1];
             }
             
             points[0][i] /= poly[i].size();
