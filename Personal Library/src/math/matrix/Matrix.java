@@ -281,8 +281,8 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
                 
                 for(int r = 0; r < numOfRow; r++) {
                     double val = get(r , c);
-                    e[c].set(r , val);
-                    a[c].set(r , val);
+                    e[c].value[r] = val;
+                    a[c].value[r] = val;
                 }
                 
                 for(int j = 0; j < c; j++) {
@@ -299,7 +299,7 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
                 
             for(int c = 0; c < numOfCol; c++) {
                 for(int r = 0; r < numOfRow; r++) {
-                    Q[r][c] = e[c].get(r);
+                    Q[r][c] = e[c].value[r];
                     if(c >= r) {
                         System.out.println(r + " " + c);
                         R[r][c] = e[r].dot(a[c]);
