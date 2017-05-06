@@ -102,7 +102,7 @@ public final class Math2 {
         
         for(int i = 0; i < dim; i++) {
             for(int j = 0; j < x.length; j++)
-                cx[j] = x[j].get(i);
+                cx[j] = x[j].value[i];
             point[i] = bezier(t , cx);
         }
         
