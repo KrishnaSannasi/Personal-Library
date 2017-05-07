@@ -127,7 +127,15 @@ public class Vector {
         return Math.acos(dot(v) / mag() / v.mag());
     }
     
-    public double distance(Vector v) {
+    public double distSq(Vector v) {
+        mult(-1).add(v);
+        double dist = magSq();
+        mult(-1).add(v);
+        
+        return dist;
+    }
+    
+    public double dist(Vector v) {
         mult(-1).add(v);
         double dist = mag();
         mult(-1).add(v);
