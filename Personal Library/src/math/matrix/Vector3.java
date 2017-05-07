@@ -38,6 +38,14 @@ public class Vector3 extends Vector {
     }
     
     @Override
+    public Vector3 sub(Vector v) {
+        updateUp();
+        super.sub(v);
+        updateDown();
+        
+        return this;
+    }
+    @Override
     public Vector mult(double d) {
         updateUp();
         super.mult(d);

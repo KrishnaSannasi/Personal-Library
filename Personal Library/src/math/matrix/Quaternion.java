@@ -45,6 +45,15 @@ public class Quaternion extends Vector {
     }
     
     @Override
+    public Quaternion sub(Vector v) {
+        updateUp();
+        super.sub(v);
+        updateDown();
+        
+        return this;
+    }
+    
+    @Override
     public Quaternion mult(double val) {
         updateUp();
         super.mult(val);

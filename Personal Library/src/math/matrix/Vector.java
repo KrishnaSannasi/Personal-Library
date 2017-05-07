@@ -49,6 +49,17 @@ public class Vector {
         return this;
     }
     
+    public Vector sub(Vector v) {
+        if(v.value.length == value.length) {
+            for(int i = 0; i < value.length; i++)
+                value[i] -= v.value[i];
+        }
+        else {
+            throw new IndexOutOfBoundsException();
+        }
+        return this;
+    }
+    
     public Vector mult(double d) {
         for(int i = 0; i < value.length; i++)
             value[i] *= d;

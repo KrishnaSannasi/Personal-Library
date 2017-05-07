@@ -36,6 +36,15 @@ public class Vector2 extends Vector {
     }
     
     @Override
+    public Vector2 sub(Vector v) {
+        updateUp();
+        super.sub(v);
+        updateDown();
+        
+        return this;
+    }
+    
+    @Override
     public Vector mult(double d) {
         updateUp();
         super.mult(d);
