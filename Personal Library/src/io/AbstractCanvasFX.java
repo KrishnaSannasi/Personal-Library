@@ -12,12 +12,12 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public abstract class AbstractCanvasFX extends Pane implements WritableValue<AbstractCanvasFX> {
-    private GraphicsContext g;
-    private Canvas          canvas;
+    private GraphicsContext   g;
+    private Canvas            canvas;
+    private volatile Timeline timeline;
     
-    private int     width , height;
-    private long    lastTime;
-    private boolean running;
+    private int  width , height;
+    private long lastTime;
     
     protected double  targetUPS = 60;
     protected boolean doUpdateKeepUp;
@@ -43,7 +43,7 @@ public abstract class AbstractCanvasFX extends Pane implements WritableValue<Abs
         
         setup();
         
-        final Timeline timeline = new Timeline();
+        timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.setAutoReverse(false);
         KeyFrame kf = new KeyFrame(Duration.seconds(1 / targetUPS) , new EventHandler<ActionEvent>() {
@@ -56,16 +56,16 @@ public abstract class AbstractCanvasFX extends Pane implements WritableValue<Abs
                 g.save();
                 render(g);
                 g.restore();
-                
-                if(!running) {
-                    cleanup();
-                    timeline.stop();
-                }
             }
         });
         
         timeline.getKeyFrames().add(kf);
         timeline.play();
+    }
+    
+    public void stop() {
+        timeline.stop();
+        cleanup();
     }
     
     public void clearScreen() {
