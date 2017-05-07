@@ -124,12 +124,12 @@ public class VectorUtils {
             }
             case 2: {
                 double theta = RAND.nextDouble() * TAU;
-                return new Vector(Math.cos(theta) , Math.sin(theta));
+                return new Vector2(Math.cos(theta) , Math.sin(theta));
             }
             case 3: {
                 double theta = RAND.nextDouble() * TAU;
                 double phi = RAND.nextDouble() * Math.PI;
-                return new Vector(Math.cos(theta) * Math.sin(phi) , Math.sin(theta) * Math.sin(phi) , Math.cos(phi));
+                return new Vector3(Math.cos(theta) * Math.sin(phi) , Math.sin(theta) * Math.sin(phi) , Math.cos(phi));
             }
             case 4: {
                 double theta1 = RAND.nextDouble() * TAU;
