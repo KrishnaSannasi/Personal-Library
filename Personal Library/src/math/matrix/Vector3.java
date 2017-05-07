@@ -4,16 +4,18 @@ public class Vector3 extends Vector {
     public double x , y , z;
     
     public Vector3() {
-        this(0 , 0);
+        this(0 , 0 , 0);
     }
     
-    public Vector3(double x , double y) {
+    public Vector3(double x , double y , double z) {
+        super(x , y , z);
         this.x = x;
         this.y = y;
+        this.z = z;
     }
     
     public Vector3(Vector3 v) {
-        super(v.x , v.y , v.z);
+        this(v.x , v.y , v.z);
     }
     
     private void updateUp() {
@@ -45,6 +47,7 @@ public class Vector3 extends Vector {
         
         return this;
     }
+    
     @Override
     public Vector mult(double d) {
         updateUp();
@@ -53,7 +56,7 @@ public class Vector3 extends Vector {
         
         return this;
     }
-
+    
     @Override
     public Vector div(double d) {
         updateUp();

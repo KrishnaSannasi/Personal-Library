@@ -8,12 +8,13 @@ public class Vector2 extends Vector {
     }
     
     public Vector2(double x , double y) {
+        super(x , y);
         this.x = x;
         this.y = y;
     }
     
     public Vector2(Vector2 v) {
-        super(v.x , v.y);
+        this(v.x , v.y);
     }
     
     private void updateUp() {
