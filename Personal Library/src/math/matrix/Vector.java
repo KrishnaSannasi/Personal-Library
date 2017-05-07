@@ -92,7 +92,11 @@ public class Vector {
     }
     
     public Vector normalize() {
-        return div(mag());
+        double mag = mag();
+        if(mag == 0)
+            return this;
+        else
+            return div(mag());
     }
     
     @Override
