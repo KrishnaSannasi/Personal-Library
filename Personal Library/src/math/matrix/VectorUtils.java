@@ -4,13 +4,29 @@ import java.util.Random;
 
 public class VectorUtils {
     private static final Random RANDOM = new Random();
-    private static Quaternion   v      = new Quaternion() , trans = new Quaternion();
+    private static Quaternion   vector = new Quaternion() , trans = new Quaternion();
+    
+    public static final Vector rotate(Vector2 v , double ax , double ay , double az , double angle) {
+        return rotate(v.x , v.y , 0 , ax , ay , az , angle);
+    }
+    
+    public static final Vector rotate(Vector3 v , double ax , double ay , double az , double angle) {
+        return rotate(v.x , v.y , v.z , ax , ay , az , angle);
+    }
+    
+    public static final Vector rotate(Vector2 v , Vector3 axis , double angle) {
+        return rotate(v.x , v.y , 0 , axis.x , axis.y , axis.z , angle);
+    }
+    
+    public static final Vector rotate(Vector3 v , Vector3 axis , double angle) {
+        return rotate(v.x , v.y , v.z , axis.x , axis.y , axis.z , angle);
+    }
     
     public static final Vector rotate(double x , double y , double z , double ax , double ay , double az , double angle) {
-        v.a = 0;
-        v.b = x;
-        v.c = y;
-        v.d = z;
+        vector.a = 0;
+        vector.b = x;
+        vector.c = y;
+        vector.d = z;
         
         double hangle = angle / 2;
         double cos = Math.cos(hangle);
@@ -21,7 +37,7 @@ public class VectorUtils {
         trans.c = sin * ay;
         trans.d = sin * az;
         
-        Quaternion q = v.conjugation(trans.normalize());
+        Quaternion q = vector.conjugation(trans.normalize());
         
         return new Vector(q.b , q.c , q.d);
     }
@@ -99,6 +115,20 @@ public class VectorUtils {
         }
         
         return det;
+    }
+    
+    public static final Vector createVector(double... vector) {
+        switch (vector.length) {
+            case 2:
+                return new Vector2(vector[0] , vector[1]);
+            case 3:
+                return new Vector3(vector[0] , vector[1] , vector[2]);
+            case 4:
+                return new Quaternion(vector[0] , vector[1] , vector[2] , vector[3]);
+            default:
+                return new Vector(vector);
+        }
+        
     }
     
     public static Vector createRand(int dim) {
