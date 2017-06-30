@@ -91,7 +91,7 @@ public class Matrix extends AbstractMatrix<Double , Matrix> {
     @Override
     public Matrix multiply(Matrix matrix) {
         if(matrix.numOfRow != numOfCol) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException(String.format("cannot multiply a %dx%d matrix with a %dx%d matrix" , numOfRow , numOfCol , matrix.numOfRow , numOfCol));
         }
         
         Double[][] product = new Double[numOfRow][matrix.numOfCol];
