@@ -64,6 +64,15 @@ public class Vector2 extends Vector {
     }
     
     @Override
+    public Vector2 setMag(double mag) {
+        updateUp();
+        super.setMag(mag);
+        updateDown();
+        
+        return this;
+    }
+    
+    @Override
     public double dot(Vector v) {
         updateUp();
         double dot = super.dot(v);

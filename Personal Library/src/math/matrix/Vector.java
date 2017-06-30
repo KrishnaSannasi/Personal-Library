@@ -139,7 +139,20 @@ public class Vector {
     }
     
     public double getAngle(Vector v) {
-        return Math.acos(dot(v) / mag() / v.mag());
+        double m1 , m2;
+        
+        m1 = mag();
+        m2 = v.mag();
+        
+        if(m1 == 0)
+            throw new IllegalArgumentException("zero vector cannot be used to get angles");
+        
+        if(m2 == 0)
+            throw new IllegalArgumentException("Cannot check angle against zero vector");
+        
+        double angle = (dot(v) / m1 / m2) % 1;
+        
+        return Math.acos(angle);
     }
     
     public double distSq(Vector v) {
