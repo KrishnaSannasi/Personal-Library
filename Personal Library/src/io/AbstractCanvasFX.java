@@ -52,13 +52,12 @@ public abstract class AbstractCanvasFX extends Pane implements WritableValue<Abs
                 double dt = (currentNanoTime - lastTime) / 1e9;
                 lastTime = currentNanoTime;
                 
-                if(dt * targetUPS < .1)
-                    return;
-                
-                tick(dt);
-                g.save();
-                render(g);
-                g.restore();
+                if(dt * targetUPS < 10) {
+                    tick(dt);
+                    g.save();
+                    render(g);
+                    g.restore();
+                }
             }
         });
         
