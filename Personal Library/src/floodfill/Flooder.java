@@ -121,6 +121,9 @@ public final class Flooder {
                 return;
             map[x][y].state = State.FILLED;
         }
+        else {
+            return;
+        }
         
         floodBlockR(map , x , y , 1 , 0);
         floodBlockR(map , x , y , -1 , 0);
