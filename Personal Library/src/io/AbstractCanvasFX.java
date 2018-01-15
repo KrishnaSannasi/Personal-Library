@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -13,7 +14,8 @@ import javafx.util.Duration;
 
 public abstract class AbstractCanvasFX extends Pane implements WritableValue<AbstractCanvasFX> {
     private GraphicsContext   g;
-    private Canvas            canvas;
+    protected Canvas          canvas;
+    protected Group           root;
     private volatile Timeline timeline;
     
     private int  width , height;

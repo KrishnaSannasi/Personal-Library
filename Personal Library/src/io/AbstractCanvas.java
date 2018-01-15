@@ -2,6 +2,7 @@ package io;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -144,6 +145,8 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
         return done;
     }
     
+    protected BufferedImage img;
+    
     @Override
     public final void run() {
         setVisible(true);
@@ -158,8 +161,10 @@ public abstract class AbstractCanvas extends Canvas implements Runnable , KeyLis
         strategy = getBufferStrategy();
         double catchUp = 0;
         
+        BufferedImage image = new BufferedImage(getWidth() , getHeight() , BufferedImage.TYPE_INT_ARGB);
+        img = image;
+        
         while(!done) {
-            BufferedImage image = new BufferedImage(getWidth() , getHeight() , BufferedImage.TYPE_INT_ARGB);
             do {
                 thisFrameTime = System.nanoTime();
                 deltaT = (thisFrameTime - lastFrameTime) / 1e9;
