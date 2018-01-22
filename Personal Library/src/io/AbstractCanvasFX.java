@@ -6,10 +6,15 @@ import javafx.animation.Timeline;
 import javafx.beans.value.WritableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public abstract class AbstractCanvasFX extends Pane implements WritableValue<AbstractCanvasFX> {
@@ -92,6 +97,10 @@ public abstract class AbstractCanvasFX extends Pane implements WritableValue<Abs
     
     public void cleanup() {
         
+    }
+    
+    public void setBackground(Color color) {
+        setBackground(new Background(new BackgroundFill(color , CornerRadii.EMPTY , Insets.EMPTY)));
     }
     
     public abstract void tick(double deltaT);
