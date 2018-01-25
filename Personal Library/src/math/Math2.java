@@ -3,7 +3,8 @@ package math;
 import math.matrix.Vector;
 
 public final class Math2 {
-    private static final double STD_CURVE_COEFF[] = {0.0000014232966572456734266807 , 0.79845014549212401191185 , -0.0070208686008880734030572 , -0.10550649458477175765778 , -0.050170092689955576171875 , 0.069361597650519055175781 , -0.027250505403858675286851 , 0.00533072557369898852571 , -0.00053348158351417130394325 , 0.00002185752235202593136528};
+    private static final double STD_CURVE_COEFF[] = {0.00489149039998 , -0.00233559754606 , -0.00524015425347 , -0.00319480364672 , -0.00124132244791};
+    private static final double STD_CURVE_PERIOD  = 0.688648400484;
     public static final double  TAU               = 2 * Math.PI;
     
     public static final double min(double... ds) {
@@ -72,20 +73,13 @@ public final class Math2 {
             return 1;
         if(x == 0)
             return .5;
+        double std = Math.exp(-1.7 * x) + 1;
+        std = 1 / std;
+        for(int i = 1; i <= STD_CURVE_COEFF.length; i++) {
+            std += STD_CURVE_COEFF[i - 1] * Math.sin(i * STD_CURVE_PERIOD * x);
+        }
         
-        double val = 0 , x1 = 1 / x;
-        boolean isneg = x < 0;
-        
-        if(isneg)
-            x *= -1;
-        
-        for(int i = 0; i < STD_CURVE_COEFF.length; i++)
-            val += STD_CURVE_COEFF[i] * (x1 *= x);
-        
-        if(isneg)
-            return (1 - val) / 2;
-        else
-            return (val + 1) / 2;
+        return std;
     }
     
     public static final Vector bezier(double t , Vector... x) {
