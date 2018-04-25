@@ -1,11 +1,7 @@
 package io;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.AnimationTimer;
 import javafx.beans.value.WritableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -15,16 +11,14 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 public abstract class AbstractCanvasFX extends Pane implements WritableValue<AbstractCanvasFX> {
-    private GraphicsContext   g;
-    protected Canvas          canvas;
-    protected Group           root;
-    private volatile Timeline timeline;
+    private GraphicsContext         g;
+    protected Canvas                canvas;
+    protected Group                 root;
+    private volatile AnimationTimer animation;
     
     private int  width , height;
-    private long lastTime;
     
     protected double  targetUPS = 60;
     protected boolean doUpdateKeepUp;
@@ -50,31 +44,45 @@ public abstract class AbstractCanvasFX extends Pane implements WritableValue<Abs
         
         setup();
         
-        timeline = new Timeline();
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.setAutoReverse(false);
-        KeyFrame kf = new KeyFrame(Duration.seconds(1 / targetUPS) , new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent ae) {
-                long currentNanoTime = System.nanoTime();
-                double dt = (currentNanoTime - lastTime) / 1e9;
-                lastTime = currentNanoTime;
+        final long startTime = System.nanoTime();
+        
+        animation = new AnimationTimer() {
+            long lastTime = startTime;
+            
+            @Override
+            public void handle(long now) {
+                double deltaT = (now - lastTime) / 1e9;
                 
-                if(dt * targetUPS < 10) {
-                    tick(dt);
-                    g.save();
-                    render(g);
-                    g.restore();
+                tick(deltaT);
+                render(g);
+                lastTime = now;
+                
+                if(deltaT * targetUPS < 1) {
+                    double slp = 1 / targetUPS - deltaT;
+                    long slpm = (int) (slp * 1000);
+                    try {
+                        Thread.sleep(slpm);
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        });
+            
+            @Override
+            public void stop() {
+                super.stop();
+                cleanup();
+            }
+        };
         
-        timeline.getKeyFrames().add(kf);
-        timeline.play();
+        animation.start();
     }
     
     public void stop() {
-        timeline.stop();
-        cleanup();
+//        timeline.stop();
+        animation.stop();
+        animation = null;
     }
     
     public void clearScreen() {
